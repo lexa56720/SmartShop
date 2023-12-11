@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartShop.Models.DataBase
+namespace SmartShop.Models.DataBase.Tables
 {
     public class User
     {
@@ -15,7 +15,8 @@ namespace SmartShop.Models.DataBase
         [Required]
         public required string Password { get; set; }
 
-        public string Token { get; set; } = string.Empty;
+        [Required]
+        public required string Token { get; set; } = string.Empty;
 
         public int RoleId { get; set; }
 

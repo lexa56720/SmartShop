@@ -4,5 +4,15 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+
+    <form>
+        <input id="name" type="text" size="30" value="имя">
+        <input id="login" type="text" size="30" value="логин">
+        <input id="pass" type="text" size="30" value="пароль">
+        <button type="button" onclick="Register(document.getElementById('name').value,
+                                                document.getElementById('login').value,
+                                                document.getElementById('pass').value);" >Войти</button>
+    </form>
+
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

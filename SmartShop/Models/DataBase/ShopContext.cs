@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartShop.Models.DataBase.Tables;
 
 namespace SmartShop.Models.DataBase
 {
@@ -8,7 +9,6 @@ namespace SmartShop.Models.DataBase
         {
             Database.EnsureCreated();
         }
-
         public virtual DbSet<User> Users { get; set; }
 
         public virtual DbSet<Smartphone> Smartphones { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartShop.Models.DataBase
+namespace SmartShop.Models.DataBase.Tables
 {
 
     public enum Roles
@@ -13,6 +13,6 @@ namespace SmartShop.Models.DataBase
         public int Id { get; set; }
 
         [Required]
-        public required Roles Roles{ get; set; }
+        public required Roles Roles { get; set; }
     }
 }

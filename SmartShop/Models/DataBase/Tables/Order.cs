@@ -1,4 +1,4 @@
-﻿namespace SmartShop.Models.DataBase
+﻿namespace SmartShop.Models.DataBase.Tables
 {
     public enum OrderStatus
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartShop.Models.DataBase
+namespace SmartShop.Models.DataBase.Tables
 {
     public class Smartphone
     {
@@ -25,7 +25,7 @@ namespace SmartShop.Models.DataBase
         [Required]
         public required int MegaPixels { get; set; }
 
-       
+
         public virtual Producer Producer { get; set; } = null!;
     }
 }
