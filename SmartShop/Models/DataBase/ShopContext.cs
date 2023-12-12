@@ -22,7 +22,9 @@ namespace SmartShop.Models.DataBase
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(entity =>
+
+           
+           modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("users");
                 entity.HasKey(e => e.Id).HasName("user_pkey");     

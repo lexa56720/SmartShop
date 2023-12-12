@@ -17,8 +17,13 @@ namespace SmartShop.Controllers
             Context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var api = await GetApiByCookies(HttpContext.Request.Cookies);
+
+            if (api != null)
+                ViewBag.User = api.User;
+            ViewBag.IsHeaderEnabled = true;
             return View();
         }
 
@@ -27,10 +32,22 @@ namespace SmartShop.Controllers
             return View();
         }
 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private async Task<Api?> GetApiByCookies(IRequestCookieCollection cookies)
+        {
+            if (cookies.TryGetValue("id", out var strId) &&
+                cookies.TryGetValue("token", out var token) &&
+                int.TryParse(strId, out var id))
+            {
+                return await Api.GetApi(id, token, Context);
+            }
+            return null;
         }
     }
 }

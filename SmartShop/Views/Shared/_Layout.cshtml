@@ -9,27 +9,36 @@
     <link rel="stylesheet" href="~/SmartShop.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    @if (ViewBag.IsHeaderEnabled)
+    {
+        <header>
+            <nav class="navbar-light bg-white border-bottom box-shadow mb-3" style="min-height:50px">
+                <div class="d-flex justify-content-between">
+                    <a class="navbar-brand" style="font-size:x-large" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
+                    <div class="d-flex flex-column">
+                        @if (ViewBag.User != null)
+                        {
+                            <div>
+                                <a class="nav-link text-dark" style="display:flow" asp-area="" asp-controller="Profile" asp-action="Index">@ViewBag.User.Name</a>
+                            </div>
+
+                            <div>
+                                <a href="#" onclick="LogOut();return false;">Выйти</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a style="padding:10px" asp-area="" asp-controller="Auth" asp-action="Login">Войти</a>
+                        }
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+
+
+            </nav>
+        </header>
+    }
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

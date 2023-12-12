@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<form>
+    <div>
+        <input id="name" type="text" size="30" placeholder="Имя">
+    </div>
+    <div>
+        <input id="login" type="text" size="30" placeholder="Логин">
+        <h6 id="warning" style="visibility:collapse; display:inline-block">Логин занят</h6>
+    </div>
+    <div>
+        <input id="pass" type="text" size="30" placeholder="Пароль">
+    </div>
+    <button type="button" onclick="Register(document.getElementById('name').value,
+                                                document.getElementById('login').value,
+                                                document.getElementById('pass').value);">
+        Зарегистрироваться
+    </button>
+</form>
+<div>
+    <a href="/Auth/Login"> Уже есть аккаунт? Войти</a>
+</div>

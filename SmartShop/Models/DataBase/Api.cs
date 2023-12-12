@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Plugins;
 using SmartShop.Models.DataBase.Tables;
 
 namespace SmartShop.Models.DataBase
@@ -36,34 +37,31 @@ namespace SmartShop.Models.DataBase
         }
         public static async Task<Api?> GetApi(string login, string pass, ShopContext db)
         {
-            if (!await IsLegal(login, pass, db))
+            var user = await GetUser(login, db);
+
+            if (user == null)
                 return null;
 
-            var user = await GetUser(login, db);
             user.Token = GenerateToken();
             await db.SaveChangesAsync();
 
             return new Api(user);
         }
-        private static async Task<bool> IsLegal(int userId, string Token, ShopContext db)
+        private static async Task<bool> IsLegal(int userId, string token, ShopContext db)
         {
-            throw new NotImplementedException();
+            return await db.Users.AnyAsync(u => u.Id == userId && u.Token == token);
         }
-        private static async Task<bool> IsLegal(string login, string pass, ShopContext db)
+        private static async Task<User?> GetUser(int userId, ShopContext db)
         {
-            throw new NotImplementedException();
+            return await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
-        private static async Task<User> GetUser(int userId, ShopContext db)
+        private static async Task<User?> GetUser(string login, ShopContext db)
         {
-            throw new NotImplementedException();
-        }
-        private static async Task<User> GetUser(string login, ShopContext db)
-        {
-            throw new NotImplementedException();
+            return await db.Users.FirstOrDefaultAsync(u => u.Login == login);
         }
         private static string GenerateToken()
         {
-          return  System.Security.Cryptography.RandomNumberGenerator.GetHexString(64);
+            return System.Security.Cryptography.RandomNumberGenerator.GetHexString(64);
         }
     }
 }
