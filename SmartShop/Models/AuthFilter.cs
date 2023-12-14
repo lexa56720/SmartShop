@@ -17,22 +17,19 @@ namespace SmartShop.Models
     public class AuthFilter
     {
         private readonly RequestDelegate Next;
-        private readonly ILogger<AuthFilter> Logger;
-        public AuthFilter(RequestDelegate next, ILoggerFactory loggerFactory)
+        public AuthFilter(RequestDelegate next)
         {
             Next = next;
-            Logger = loggerFactory?.CreateLogger<AuthFilter>() ??
-            throw new ArgumentNullException(nameof(loggerFactory));
         }
-        public async Task InvokeAsync(HttpContext context, ShopContext db)
+        public async Task InvokeAsync(HttpContext context, ApiService api)
         {
-            if (await IsHaveAccess(context, db))
+            if (IsHaveAccess(context, api))
                 await Next(context);
             else
                 context.Response.Redirect("/");
         }
 
-        public async Task<bool> IsHaveAccess(HttpContext context, ShopContext db)
+        public bool IsHaveAccess(HttpContext context, ApiService api)
         {
             var endpoint = context.GetEndpoint();
             if (endpoint == null)
@@ -40,18 +37,8 @@ namespace SmartShop.Models
 
             var accessAttribute = endpoint.Metadata.FirstOrDefault(o => o is AccessAttribute) as AccessAttribute;
 
-            if (accessAttribute == default)
-                return true;
-
-            var api = await Api.GetApi(context.Request.Cookies, db);
-
-            if (api == null)
-                return false;
-
-            if (accessAttribute.Roles.Any(r => r == api.User.Role))
-                return true;
-
-            return false;
+            return (api.User != null || accessAttribute == null) &&
+                   (accessAttribute == null || accessAttribute.Roles.Any(r => r <= api.User.Role));
         }
     }
 

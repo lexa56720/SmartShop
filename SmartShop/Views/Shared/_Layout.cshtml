@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/SmartShop.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @if (ViewBag.IsHeaderEnabled)
+    @if (ViewBag.IsHeaderDisabled == null || ViewBag.IsHeaderDisabled == false)
     {
         <header>
             <nav class="navbar-light bg-white border-bottom box-shadow mb-3" style="min-height:50px">

@@ -1,22 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartShop.Models;
 using SmartShop.Models.DataBase;
 
 namespace SmartShop.Controllers
 {
-    public class AuthController:Controller
+    public class AuthController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        public AuthController(ILogger<HomeController> logger, ShopContext context)
-        {
-        }
         public IActionResult Login()
         {
-            ViewBag.IsHeaderEnabled = false;
+            ViewBag.IsHeaderDisabled = true; 
             return View();
         }
 
         public IActionResult Register()
         {
-            ViewBag.IsHeaderEnabled = false;
+            ViewBag.IsHeaderDisabled = true;
             return View();
         }
     }

@@ -1,48 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartShop.Models;
 using SmartShop.Models.DataBase;
 using SmartShop.Models.DataBase.Tables;
 
 namespace SmartShop.Controllers
 {
-    public class ApiController : Controller
+    public class ApiController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        private ILogger<HomeController> Logger { get; }
-
-        public ShopContext Context { get; }
-
-        public ApiController(ILogger<HomeController> logger, ShopContext context)
-        {
-            Logger = logger;
-            Context = context;
-        }
-
         [HttpPost("api/Login")]
         public async Task<IActionResult> Login(string login, string pass)
         {
-            var api = await Api.GetApi(login, pass, Context);
-            if (api == null)
+            await Api.Login(login, pass);
+            if (Api.User==null)
                 return Conflict();
-            SetCookie(api.User);
-            return Json(api.User);
+            SetCookie(Api.User);
+            return Ok();
         }
 
         [HttpPost("api/Register")]
         public async Task<IActionResult> Register(string name, string login, string pass)
         {
-            var user = await Api.CreateUser(login, pass, name, Context);
-            if (user == null)
+            if (!await Api.CreateUser(login, pass, name))
                 return Conflict();
-            SetCookie(user);
-            return Json(user);
-        }
-
-        [HttpPost("api/Load")]
-        public async Task<IActionResult> Load(int userId, string token)
-        {
-            var api = await Api.GetApi(userId, token, Context);
-            if (api == null)
-                return Empty;
-            return Json(api);
+            SetCookie(Api.User);
+            return Ok();
         }
 
         private void SetCookie(User user)

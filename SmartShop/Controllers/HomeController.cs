@@ -6,27 +6,13 @@ using System.Diagnostics;
 
 namespace SmartShop.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public ShopContext Context { get; }
-
-        public HomeController(ILogger<HomeController> logger, ShopContext context)
+        public IActionResult Index()
         {
-            _logger = logger;
-            Context = context;
-        }
+            if (Api.User != null)
+                ViewBag.User = Api.User;
 
-
-  
-        public async Task<IActionResult> Index()
-        {
-            var api = await Api.GetApi(HttpContext.Request.Cookies,Context);
-
-            if (api != null)
-                ViewBag.User = api.User;
-            ViewBag.IsHeaderEnabled = true;
             return View();
         }
 
@@ -43,7 +29,6 @@ namespace SmartShop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
 
     }
 }
