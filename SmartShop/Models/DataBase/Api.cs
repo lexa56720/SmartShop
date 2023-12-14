@@ -23,6 +23,7 @@ namespace SmartShop.Models.DataBase
                 Password = pass,
                 Name = name,
                 Token = GenerateToken(),
+                Role=Role.Admin
             };
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
@@ -46,6 +47,17 @@ namespace SmartShop.Models.DataBase
             await db.SaveChangesAsync();
 
             return new Api(user);
+        }
+
+        public static async Task<Api?> GetApi(IRequestCookieCollection cookies, ShopContext db)
+        {
+            if (cookies.TryGetValue("id", out var strId) &&
+                cookies.TryGetValue("token", out var token) &&
+                int.TryParse(strId, out var id))
+            {
+                return await Api.GetApi(id, token, db);
+            }
+            return null;
         }
         private static async Task<bool> IsLegal(int userId, string token, ShopContext db)
         {

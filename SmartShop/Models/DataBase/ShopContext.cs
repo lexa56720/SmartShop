@@ -13,8 +13,6 @@ namespace SmartShop.Models.DataBase
 
         public virtual DbSet<Smartphone> Smartphones { get; set; }
 
-        public virtual DbSet<Role> Roles { get; set; }
-
         public virtual DbSet<Producer> Producers { get; set; }
 
         public virtual DbSet<Order> Orders { get; set; }
@@ -32,23 +30,14 @@ namespace SmartShop.Models.DataBase
                 entity.Property(e => e.Login).HasColumnName("login");
                 entity.Property(e => e.Password).HasColumnName("password");
                 entity.Property(e => e.Name).HasColumnName("name");
-                entity.Property(e => e.RoleId).HasColumnName("role_id");
                 entity.Property(e => e.Token).HasColumnName("token");
 
-                entity.HasOne(e => e.Role).WithOne()
-                      .HasForeignKey<Role>(r=>r.Id);
 
                 entity.HasMany(e => e.Orders).WithOne(o => o.User)
                       .HasForeignKey(o=>o.UserId);
             });
 
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("roles");
-                entity.HasKey(e => e.Id).HasName("role_pkey");
-                entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Roles).HasColumnName("Roles");
-            });
+
 
             modelBuilder.Entity<Smartphone>(entity =>
             {

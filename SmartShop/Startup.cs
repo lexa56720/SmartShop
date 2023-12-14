@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartShop.Models;
 using SmartShop.Models.DataBase;
 
 namespace SmartShop
@@ -16,6 +17,7 @@ namespace SmartShop
         {
             var s = Configuration.GetConnectionString("ShopConnection");
             services.AddDbContext<ShopContext>(options => options.UseNpgsql(s));
+        
             services.AddControllersWithViews();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -35,7 +37,8 @@ namespace SmartShop
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseAuthentication();
+            app.UseAuthFilter();
 
             app.UseEndpoints(endpoints =>
             {
@@ -43,7 +46,7 @@ namespace SmartShop
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-
+            
         }
     }
 }

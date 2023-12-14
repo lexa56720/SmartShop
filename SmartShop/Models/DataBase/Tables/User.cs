@@ -2,6 +2,11 @@
 
 namespace SmartShop.Models.DataBase.Tables
 {
+    public enum Role
+    {
+        User,
+        Admin,
+    }
     public class User
     {
         public int Id { get; set; }
@@ -18,9 +23,8 @@ namespace SmartShop.Models.DataBase.Tables
         [Required]
         public required string Token { get; set; } = string.Empty;
 
-        public int RoleId { get; set; }
-
-        public virtual Role Role { get; set; } = null!;
+        [Required]
+        public required Role Role { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; } = null!;
     }

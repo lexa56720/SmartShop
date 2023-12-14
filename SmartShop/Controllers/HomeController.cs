@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartShop.Models;
 using SmartShop.Models.DataBase;
+using SmartShop.Models.DataBase.Tables;
 using System.Diagnostics;
 
 namespace SmartShop.Controllers
@@ -17,9 +18,11 @@ namespace SmartShop.Controllers
             Context = context;
         }
 
+
+  
         public async Task<IActionResult> Index()
         {
-            var api = await GetApiByCookies(HttpContext.Request.Cookies);
+            var api = await Api.GetApi(HttpContext.Request.Cookies,Context);
 
             if (api != null)
                 ViewBag.User = api.User;
@@ -27,6 +30,8 @@ namespace SmartShop.Controllers
             return View();
         }
 
+
+        [Access(Role.User)]
         public IActionResult Privacy()
         {
             return View();
@@ -39,15 +44,6 @@ namespace SmartShop.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private async Task<Api?> GetApiByCookies(IRequestCookieCollection cookies)
-        {
-            if (cookies.TryGetValue("id", out var strId) &&
-                cookies.TryGetValue("token", out var token) &&
-                int.TryParse(strId, out var id))
-            {
-                return await Api.GetApi(id, token, Context);
-            }
-            return null;
-        }
+
     }
 }
