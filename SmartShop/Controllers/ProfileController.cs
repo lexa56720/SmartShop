@@ -7,12 +7,19 @@ namespace SmartShop.Controllers
 {
     public class ProfileController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (Api.User != null && Api.User.Role == Role.Admin)
-                return View("AdminPanel");
+                return await AdminPanel();
 
             return View();
+        }
+
+        public async Task<IActionResult> AdminPanel()
+        {
+            ViewBag.Producers =await Api.GetProducers();
+
+            return View("AdminPanel");
         }
     }
 }

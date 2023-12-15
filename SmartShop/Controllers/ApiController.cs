@@ -2,6 +2,7 @@
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
 using SmartShop.Services;
+using SmartShop.Services.Auth;
 
 namespace SmartShop.Controllers
 {
@@ -26,6 +27,22 @@ namespace SmartShop.Controllers
             return Ok();
         }
 
+        [HttpPost("api/AddProduct")]
+        [Access(Role.Admin)]
+        public async Task<IActionResult> AddProduct(Smartphone smartphone)
+        {
+            await Api.AddProduct(smartphone);
+            return Ok();
+        }
+
+
+        [HttpPost("api/AddProducer")]
+        [Access(Role.Admin)]
+        public async Task<IActionResult> AddProducer(Producer producer)
+        {
+            await Api.AddProducer(producer);
+            return Ok();
+        }
         private void SetCookie(User user)
         {
             HttpContext.Response.Cookies.Append("name", user.Name);

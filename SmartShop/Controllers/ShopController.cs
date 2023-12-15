@@ -4,7 +4,7 @@ using SmartShop.Services;
 
 namespace SmartShop.Controllers
 {
-    public abstract class ShopController:Controller
+    public abstract class ShopController : Controller
     {
         protected readonly ILogger<HomeController> Logger;
         protected readonly ApiService Api;
@@ -16,10 +16,10 @@ namespace SmartShop.Controllers
             Api = api;
         }
 
-        public override ViewResult View()
+        public override ViewResult View(string? viewName, object? model)
         {
             ViewBag.User = Api.User;
-            return base.View();
+            return base.View(viewName, model);
         }
     }
 }

@@ -1,5 +1,55 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
+<form action="api/AddProduct" method="post">
+    <div class="form-group">
+        <label for="releaseDate">Release Date</label>
+        <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control" id="price" name="price" required>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="memorySize">Memory Size (GB)</label>
+        <input type="number" class="form-control" id="memorySize" name="memorySize" required>
+    </div>
+
+    <div class="form-group">
+        <label for="ramSize">RAM Size (GB)</label>
+        <input type="number" class="form-control" id="ramSize" name="ramSize" required>
+    </div>
+
+    <div class="form-group">
+        <label for="megaPixels">Megapixels</label>
+        <input type="number" class="form-control" id="megaPixels" name="megaPixels" required>
+    </div>
+
+    <div class="form-group">
+        <label for="producerId">Producer</label>
+        <select class="form-control" id="producerId" name="producerId" required>
+            @foreach (var producer in ViewBag.Producers)
+            {
+                <option value="@producer.Id">@producer.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<form action="api/AddProducer" method="post">
+
+    <div class="form-group">
+        <label for="pname">Producer</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

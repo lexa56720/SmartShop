@@ -63,11 +63,28 @@ namespace SmartShop.Services
             return true;
         }
 
+        public async Task<Producer[]> GetProducers()
+        {
+            return await DB.Producers.ToArrayAsync();
+        }
+
+        public async Task AddProducer(Producer producer)
+        {
+            await DB.Producers.AddAsync(producer);
+            await DB.SaveChangesAsync();
+        }
+        public async Task AddProduct(Smartphone smartphone)
+        {
+            smartphone.ReleaseDate = smartphone.ReleaseDate.ToUniversalTime();
+            await DB.Smartphones.AddAsync(smartphone);
+            await DB.SaveChangesAsync();
+        }
+
         private bool IsLegal(int userId, string token)
         {
             return DB.Users.Any(u => u.Id == userId && u.Token == token);
         }
-        private User GetUser(int userId)
+        private User? GetUser(int userId)
         {
             return DB.Users.FirstOrDefault(u => u.Id == userId);
         }
