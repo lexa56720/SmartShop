@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmartShop.Models.DataBase.Tables;
+using SmartShop.DataBase.Tables;
 
-namespace SmartShop.Models.DataBase
+namespace SmartShop.DataBase
 {
     public class ShopContext : DbContext
     {
@@ -21,21 +21,21 @@ namespace SmartShop.Models.DataBase
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-           
-           modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("users");
-                entity.HasKey(e => e.Id).HasName("user_pkey");     
-                entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Login).HasColumnName("login");
-                entity.Property(e => e.Password).HasColumnName("password");
-                entity.Property(e => e.Name).HasColumnName("name");
-                entity.Property(e => e.Token).HasColumnName("token");
+
+            modelBuilder.Entity<User>(entity =>
+             {
+                 entity.ToTable("users");
+                 entity.HasKey(e => e.Id).HasName("user_pkey");
+                 entity.Property(e => e.Id).HasColumnName("id");
+                 entity.Property(e => e.Login).HasColumnName("login");
+                 entity.Property(e => e.Password).HasColumnName("password");
+                 entity.Property(e => e.Name).HasColumnName("name");
+                 entity.Property(e => e.Token).HasColumnName("token");
 
 
-                entity.HasMany(e => e.Orders).WithOne(o => o.User)
-                      .HasForeignKey(o=>o.UserId);
-            });
+                 entity.HasMany(e => e.Orders).WithOne(o => o.User)
+                       .HasForeignKey(o => o.UserId);
+             });
 
 
 

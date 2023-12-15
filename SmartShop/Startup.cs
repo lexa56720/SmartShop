@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
-using SmartShop.Models;
-using SmartShop.Models.DataBase;
+using SmartShop.DataBase;
+using SmartShop.Services;
+using SmartShop.Services.Auth;
 
 namespace SmartShop
 {

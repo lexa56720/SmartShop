@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartShop.Models;
-using SmartShop.Models.DataBase;
-using SmartShop.Models.DataBase.Tables;
+using SmartShop.DataBase;
+using SmartShop.DataBase.Tables;
+using SmartShop.Services;
 
 namespace SmartShop.Controllers
 {

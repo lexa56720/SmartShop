@@ -1,19 +1,7 @@
-﻿using Microsoft.AspNetCore.Routing.Matching;
-using SmartShop.Models.DataBase;
-using SmartShop.Models.DataBase.Tables;
+﻿using SmartShop.Models;
 
-namespace SmartShop.Models
+namespace SmartShop.Services.Auth
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class AccessAttribute : Attribute
-    {
-        public Role[] Roles { get; init; }
-        public AccessAttribute(params Role[] roles)
-        {
-            Roles = roles;
-        }
-    }
-
     public class AuthFilter
     {
         private readonly RequestDelegate Next;

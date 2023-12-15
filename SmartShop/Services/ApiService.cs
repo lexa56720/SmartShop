@@ -1,8 +1,8 @@
-﻿using SmartShop.Models.DataBase.Tables;
-using SmartShop.Models.DataBase;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartShop.DataBase;
+using SmartShop.DataBase.Tables;
 
-namespace SmartShop.Models
+namespace SmartShop.Services
 {
     public class ApiService
     {

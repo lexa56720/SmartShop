@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartShop.Models.DataBase.Tables
+namespace SmartShop.DataBase.Tables
 {
     public class Producer
     {

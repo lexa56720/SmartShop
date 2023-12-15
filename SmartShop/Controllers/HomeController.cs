@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using SmartShop.DataBase;
+using SmartShop.DataBase.Tables;
 using SmartShop.Models;
-using SmartShop.Models.DataBase;
-using SmartShop.Models.DataBase.Tables;
+using SmartShop.Services;
+using SmartShop.Services.Auth;
 using System.Diagnostics;
 
 namespace SmartShop.Controllers
@@ -10,9 +12,6 @@ namespace SmartShop.Controllers
     {
         public IActionResult Index()
         {
-            if (Api.User != null)
-                ViewBag.User = Api.User;
-
             return View();
         }
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartShop.Models.DataBase;
-using SmartShop.Models;
+using SmartShop.DataBase;
+using SmartShop.Services;
 
 namespace SmartShop.Controllers
 {
@@ -16,12 +16,10 @@ namespace SmartShop.Controllers
             Api = api;
         }
 
-
         public override ViewResult View()
         {
             ViewBag.User = Api.User;
             return base.View();
         }
-
     }
 }

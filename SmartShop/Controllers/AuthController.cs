@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartShop.Models;
-using SmartShop.Models.DataBase;
+using SmartShop.DataBase;
+using SmartShop.Services;
 
 namespace SmartShop.Controllers
 {
