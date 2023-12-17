@@ -3,6 +3,7 @@ using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
+using System.Net.Http;
 
 namespace SmartShop.Controllers
 {
@@ -41,6 +42,31 @@ namespace SmartShop.Controllers
         public async Task<IActionResult> AddProducer(Producer producer)
         {
             await Api.AddProducer(producer);
+            return Ok();
+        }
+
+        [HttpPost("api/AddMedia")]
+        [Access(Role.Admin)]
+        public async Task<IActionResult> AddMedia()
+        {
+           var a=await HttpContext.Request.ReadFormAsync();
+
+            var file = a.Files.GetFile("image");
+            if (a.TryGetValue("smartphoneId",  out var id) && file !=null )
+            {
+                using var reader= new BinaryReader(file.OpenReadStream());
+                var data =  reader.ReadBytes((int)reader.BaseStream.Length);
+                await Api.AddMedia(data,int.Parse(id));
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("api/GetMedia")]
+        [Access(Role.Admin)]
+        public async Task<IActionResult> GetMedia(string url)
+        {
             return Ok();
         }
         private void SetCookie(User user)

@@ -34,7 +34,6 @@ async function Login(login, pass)
 
     window.open(document.location.origin, "_self");
 }
-
 async function Register(name, login, pass)
 {
     document.getElementById('warning').style.visibility = 'hidden';
@@ -64,6 +63,40 @@ async function Register(name, login, pass)
     window.open(document.location.origin, "_self");
 }
 
+async function SendForm(formId,method)
+{
+    document.getElementById(formId);
+
+    const inputTags = document.getElementById(formId).querySelectorAll('input');
+    const formData = new FormData();
+
+    for (const inputTag of inputTags) {
+        if (inputTag.type === 'text' ||
+            inputTag.type === 'number' ||
+            inputTag.type === 'checkbox' ||
+            inputTag.type === 'radio')
+
+        {
+            formData.append(inputTag.name, inputTag.value);
+        }
+        else if (inputTag.type == 'file')
+        {
+            formData.append(inputTag.name, inputTag.files[0]);
+        }
+    }
+
+    const url = "api/"+method;
+
+    const response = await fetch(url,
+        {
+            method: 'POST',
+            body:formData
+        });
+
+
+    if (!response.ok)
+        return;
+}
 
 function LogOut()
 {
@@ -73,7 +106,6 @@ function LogOut()
 
     location.reload();
 }
-
 function DeleteCookie(name)
 {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';

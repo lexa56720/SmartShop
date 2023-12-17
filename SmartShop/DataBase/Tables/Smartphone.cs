@@ -26,6 +26,8 @@ namespace SmartShop.DataBase.Tables
         public required int MegaPixels { get; set; }
 
 
+        public virtual ICollection<Media> Medias { get; set; } = null!;
+
         public virtual Producer Producer { get; set; } = null!;
     }
 }

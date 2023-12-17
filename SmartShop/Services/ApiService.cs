@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
+using System.Security.Cryptography;
 
 namespace SmartShop.Services
 {
@@ -79,7 +80,17 @@ namespace SmartShop.Services
             await DB.Smartphones.AddAsync(smartphone);
             await DB.SaveChangesAsync();
         }
-
+        public async Task AddMedia(byte[] bytes,int smartphoneId)
+        {
+            var media = new Media()
+            {
+                Data = bytes,
+                SmartphoneId = smartphoneId,
+                Url = GenerateImageUrl(),
+            };
+            await DB.Medias.AddAsync(media);
+            await DB.SaveChangesAsync();
+        }
         private bool IsLegal(int userId, string token)
         {
             return DB.Users.Any(u => u.Id == userId && u.Token == token);
@@ -94,7 +105,12 @@ namespace SmartShop.Services
         }
         private string GenerateToken()
         {
-            return System.Security.Cryptography.RandomNumberGenerator.GetHexString(64);
+            return RandomNumberGenerator.GetHexString(64);
+        }
+
+        private string GenerateImageUrl()
+        {
+            return $"images/{RandomNumberGenerator.GetHexString(64)}.png";
         }
     }
 }

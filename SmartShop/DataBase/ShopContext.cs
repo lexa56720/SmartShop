@@ -7,8 +7,10 @@ namespace SmartShop.DataBase
     {
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
+
         public virtual DbSet<User> Users { get; set; }
 
         public virtual DbSet<Smartphone> Smartphones { get; set; }
@@ -17,6 +19,7 @@ namespace SmartShop.DataBase
 
         public virtual DbSet<Order> Orders { get; set; }
 
+        public virtual DbSet<Media> Medias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +34,7 @@ namespace SmartShop.DataBase
                  entity.Property(e => e.Password).HasColumnName("password");
                  entity.Property(e => e.Name).HasColumnName("name");
                  entity.Property(e => e.Token).HasColumnName("token");
+                 entity.Property(e => e.Role).HasColumnName("role");
 
 
                  entity.HasMany(e => e.Orders).WithOne(o => o.User)
@@ -55,7 +59,19 @@ namespace SmartShop.DataBase
                 entity.HasOne(e => e.Producer).WithMany(p => p.Smartphones)
                       .HasForeignKey(s => s.ProducerId);
             });
+            modelBuilder.Entity<Media>(entity =>
+            {
+                entity.ToTable("medias");
+                entity.HasKey(e => e.Id).HasName("media_pkey");
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Url).HasColumnName("url");
+                entity.Property(e => e.SmartphoneId).HasColumnName("smartphone_id");
+                entity.Property(e => e.Data).HasColumnName("data");
 
+
+                entity.HasOne(e => e.Smartphone).WithMany(s => s.Medias)
+                      .HasForeignKey(e=>e.SmartphoneId);
+            });
             modelBuilder.Entity<Producer>(entity =>
             {
                 entity.ToTable("producers");

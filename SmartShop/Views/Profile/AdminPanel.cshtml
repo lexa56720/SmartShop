@@ -1,55 +1,105 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-<form action="api/AddProduct" method="post">
-    <div class="form-group">
-        <label for="releaseDate">Release Date</label>
-        <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
-    </div>
 
-    <div class="form-group">
-        <label for="price">Price</label>
-        <input type="number" class="form-control" id="price" name="price" required>
-    </div>
+<div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'products')">London</button>
+    <button class="tablinks" onclick="openTab(event, 'producers')">Paris</button>
+    <button class="tablinks" onclick="openTab(event, 'medias')">Paris</button>
+</div>
 
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
+<div id="products" class="tabcontent">
+    <form action="api/AddProduct" method="post">
+        <div class="form-group">
+            <label for="releaseDate">Release Date</label>
+            <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
+        </div>
 
-    <div class="form-group">
-        <label for="memorySize">Memory Size (GB)</label>
-        <input type="number" class="form-control" id="memorySize" name="memorySize" required>
-    </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" name="price" required>
+        </div>
 
-    <div class="form-group">
-        <label for="ramSize">RAM Size (GB)</label>
-        <input type="number" class="form-control" id="ramSize" name="ramSize" required>
-    </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
 
-    <div class="form-group">
-        <label for="megaPixels">Megapixels</label>
-        <input type="number" class="form-control" id="megaPixels" name="megaPixels" required>
-    </div>
+        <div class="form-group">
+            <label for="memorySize">Memory Size (GB)</label>
+            <input type="number" class="form-control" id="memorySize" name="memorySize" required>
+        </div>
 
-    <div class="form-group">
-        <label for="producerId">Producer</label>
-        <select class="form-control" id="producerId" name="producerId" required>
-            @foreach (var producer in ViewBag.Producers)
-            {
-                <option value="@producer.Id">@producer.Name</option>
-            }
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <div class="form-group">
+            <label for="ramSize">RAM Size (GB)</label>
+            <input type="number" class="form-control" id="ramSize" name="ramSize" required>
+        </div>
 
-<form action="api/AddProducer" method="post">
+        <div class="form-group">
+            <label for="megaPixels">Megapixels</label>
+            <input type="number" class="form-control" id="megaPixels" name="megaPixels" required>
+        </div>
 
-    <div class="form-group">
-        <label for="pname">Producer</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
+        <div class="form-group">
+            <label for="producerId">Producer</label>
+            <select class="form-control" id="producerId" name="producerId" required>
+                @foreach (var producer in ViewBag.Producers)
+                {
+                    <option value="@producer.Id">@producer.Name</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div id="producers" class="tabcontent">
+    <form action="api/AddProducer" method="post">
+
+        <div class="form-group">
+            <label for="name">Producer</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<div id="medias" class="tabcontent">
+    <form action="api/AddMedia" method="post">
+        <div class="form-group">
+            <label for="smartphoneId">smartphone id</label>
+            <input type="number" class="form-control" id="smartphoneId" name="smartphoneId" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Producer</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="SendForm('medias','AddMedia');">Submit</button>
+    </form>
+</div>
+
+<script>
+    function openTab(evt, cityName)
+    {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
