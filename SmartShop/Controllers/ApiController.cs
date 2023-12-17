@@ -3,6 +3,8 @@ using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
+using System.Buffers.Text;
+using System.Net;
 using System.Net.Http;
 
 namespace SmartShop.Controllers
@@ -63,11 +65,12 @@ namespace SmartShop.Controllers
             return BadRequest();
         }
 
-        [HttpPost("api/GetMedia")]
-        [Access(Role.Admin)]
-        public async Task<IActionResult> GetMedia(string url)
+        [HttpGet("api/images/{id}")]
+        public async Task<IActionResult> GetMedia(string id)
         {
-            return Ok();
+            var extension = id[(id.LastIndexOf('.')+1)..];
+            var media = await Api.GetMedia("images/" + id);
+            return File(media, $"image/{extension}");
         }
         private void SetCookie(User user)
         {

@@ -80,7 +80,7 @@ namespace SmartShop.Services
             await DB.Smartphones.AddAsync(smartphone);
             await DB.SaveChangesAsync();
         }
-        public async Task AddMedia(byte[] bytes,int smartphoneId)
+        public async Task AddMedia(byte[] bytes, int smartphoneId)
         {
             var media = new Media()
             {
@@ -91,6 +91,15 @@ namespace SmartShop.Services
             await DB.Medias.AddAsync(media);
             await DB.SaveChangesAsync();
         }
+
+        public async Task<byte[]> GetMedia(string url)
+        {
+            var data= await DB.Medias.FirstOrDefaultAsync(m => m.Url == url);
+            if (data == null)
+                return Array.Empty<byte>();
+            return data.Data;
+        }
+
         private bool IsLegal(int userId, string token)
         {
             return DB.Users.Any(u => u.Id == userId && u.Token == token);
