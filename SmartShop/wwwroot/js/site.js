@@ -70,19 +70,18 @@ async function SendForm(formId,method)
     const inputTags = document.getElementById(formId).querySelectorAll('input');
     const formData = new FormData();
 
-    for (const inputTag of inputTags) {
-        if (inputTag.type === 'text' ||
-            inputTag.type === 'number' ||
-            inputTag.type === 'checkbox' ||
-            inputTag.type === 'radio')
-
+    for (const inputTag of inputTags)
+    {
+        if (inputTag.type == 'file')
+        {
+            for (const innerFile of inputTag.files)
+                formData.append(innerFile.name, innerFile);
+        }
+        else
         {
             formData.append(inputTag.name, inputTag.value);
         }
-        else if (inputTag.type == 'file')
-        {
-            formData.append(inputTag.name, inputTag.files[0]);
-        }
+      
     }
 
     const url = "api/"+method;

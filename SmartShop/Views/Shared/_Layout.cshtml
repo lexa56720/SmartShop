@@ -9,21 +9,22 @@
     <link rel="stylesheet" href="~/SmartShop.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @if (ViewBag.IsHeaderDisabled == null || ViewBag.IsHeaderDisabled == false)
-    {
-        <header>
-            <nav class="navbar-light bg-white border-bottom box-shadow mb-3" style="min-height:50px">
-                <div class="d-flex justify-content-between">
-                    <a class="navbar-brand" style="font-size:x-large" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
-                    <div class="d-flex flex-column">
+
+    <header>
+        <nav class="navbar-light bg-white border-bottom box-shadow mb-3" style="min-height:50px">
+            <div class="d-flex justify-content-between">
+                <a class="navbar-brand" style="font-size:xx-large" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
+                @if (ViewBag.IsHeaderDisabled == null || ViewBag.IsHeaderDisabled == false)
+                {
+                    <div class="d-flex flex-column" style="margin:10px;">
                         @if (ViewBag.User != null)
                         {
                             <div>
-                                <a class="nav-link text-dark" style="display:flow" asp-area="" asp-controller="Profile" asp-action="Index">@ViewBag.User.Name</a>
+                                <a class="text-dark"  style="font-size:large; display:grid; justify-content: end" asp-area="" asp-controller="Profile" asp-action="Index">@ViewBag.User.Name</a>
                             </div>
 
                             <div>
-                                <a href="#" onclick="LogOut();return false;">Выйти</a>
+                                <a href="#" style="display:grid; justify-content: end" onclick="LogOut();return false;">Выйти</a>
                             </div>
                         }
                         else
@@ -31,12 +32,13 @@
                             <a style="padding:10px" asp-area="" asp-controller="Auth" asp-action="Login">Войти</a>
                         }
                     </div>
-                </div>
+                }
+            </div>
 
 
-            </nav>
-        </header>
-    }
+        </nav>
+    </header>
+
 
 
     <div class="container">

@@ -3,13 +3,13 @@
 *@
 
 <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'products')">London</button>
-    <button class="tablinks" onclick="openTab(event, 'producers')">Paris</button>
+    <button class="tablinks" onclick="openTab(event, 'products')" id="defaultOpen">Products</button>
+    <button class="tablinks" onclick="openTab(event, 'producers')">Producers</button>
     <button class="tablinks" onclick="openTab(event, 'medias')">Paris</button>
 </div>
 
 <div id="products" class="tabcontent">
-    <form action="api/AddProduct" method="post">
+    <form id="product" action="api/AddProduct" method="post">
         <div class="form-group">
             <label for="releaseDate">Release Date</label>
             <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
@@ -23,6 +23,11 @@
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" required>
         </div>
 
         <div class="form-group">
@@ -42,14 +47,20 @@
 
         <div class="form-group">
             <label for="producerId">Producer</label>
-            <select class="form-control" id="producerId" name="producerId" required>
+            <input class="form-control" list="producers" id="producerName" name="producerName" required>
+            <datalist id="producers">
                 @foreach (var producer in ViewBag.Producers)
                 {
-                    <option value="@producer.Id">@producer.Name</option>
+                    <option>@producer.Name</option>
                 }
-            </select>
+            </datalist>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div class="form-group" style="margin:10px;">
+            <label for="image">Images</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg" required multiple/>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="SendForm('product','AddProduct');">Submit</button>
     </form>
 </div>
 
@@ -71,16 +82,15 @@
             <label for="smartphoneId">smartphone id</label>
             <input type="number" class="form-control" id="smartphoneId" name="smartphoneId" required>
         </div>
-        <div class="form-group">
-            <label for="image">Producer</label>
-            <input type="file" id="image" name="image" accept="image/png, image/jpeg" />
-        </div>
+
 
         <button type="button" class="btn btn-primary" onclick="SendForm('medias','AddMedia');">Submit</button>
     </form>
 </div>
 
 <script>
+    document.getElementById("defaultOpen").click();
+
     function openTab(evt, cityName)
     {
         // Declare all variables

@@ -1,24 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Вход";
 }
-<form>
+<div style="margin:50px">
+    <form>
 
-    <div>
-        <input id="login" type="text" size="30" placeholder="Логин">
-        <h6 id="warning" style="visibility:collapse; display:inline-block">Неверные данные</h6>
-    </div>
-    <div>
-        <input id="pass" type="text" size="30" placeholder="Пароль">
-    </div>
-    <div>
-        <button type="button" onclick="Login(document.getElementById('login').value,
+        <div style="display: grid; justify-content: center; margin:10px">
+            <input id="login" type="text" class="form-control" size="30" placeholder="Логин">
+        </div>
+        <div style="display: grid; justify-content: center; margin:10px">
+            <input id="pass" type="password" size="30" class="form-control" placeholder="Пароль">
+        </div>
+        <div style="display: grid; justify-content: center; margin:10px">
+            <h6 id="warning" style="visibility:collapse; display:inline-block">Неверные данные</h6>
+
+            <button type="button" class="btn btn-primary" onclick="Login(document.getElementById('login').value,
                                              document.getElementById('pass').value);">
-            Войти
-        </button>
+                Войти
+            </button>
+        </div>
+
+    </form>
+
+    <div style="display: grid; justify-content: center;">
+        <a href="/Auth/Register">Нет аккаунта? Зарегистрироваться</a>
     </div>
-
-</form>
-
-<div>
-    <a href="/Auth/Register">Нет аккаунта? Зарегистрироваться</a>
 </div>

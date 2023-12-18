@@ -55,6 +55,7 @@ namespace SmartShop.DataBase
                 entity.Property(e => e.ProducerId).HasColumnName("producer_id");
                 entity.Property(e => e.RamSize).HasColumnName("ram_size");
                 entity.Property(e => e.ReleaseDate).HasColumnName("release_date");
+                entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.HasOne(e => e.Producer).WithMany(p => p.Smartphones)
                       .HasForeignKey(s => s.ProducerId);
@@ -70,14 +71,14 @@ namespace SmartShop.DataBase
 
 
                 entity.HasOne(e => e.Smartphone).WithMany(s => s.Medias)
-                      .HasForeignKey(e=>e.SmartphoneId);
+                      .HasForeignKey(e => e.SmartphoneId);
             });
             modelBuilder.Entity<Producer>(entity =>
             {
                 entity.ToTable("producers");
                 entity.HasKey(e => e.Id).HasName("producer_pkey");
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Name).HasColumnName("Name");
+                entity.Property(e => e.Name).HasColumnName("name");
             });
 
             modelBuilder.Entity<Order>(entity =>

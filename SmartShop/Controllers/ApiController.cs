@@ -15,7 +15,7 @@ namespace SmartShop.Controllers
         public async Task<IActionResult> Login(string login, string pass)
         {
             await Api.Login(login, pass);
-            if (Api.User==null)
+            if (Api.User == null)
                 return Conflict();
             SetCookie(Api.User);
             return Ok();
@@ -34,7 +34,22 @@ namespace SmartShop.Controllers
         [Access(Role.Admin)]
         public async Task<IActionResult> AddProduct(Smartphone smartphone)
         {
-            await Api.AddProduct(smartphone);
+            var form = await HttpContext.Request.ReadFormAsync();
+
+            if (!form.TryGetValue("producerName", out var producer))
+                return BadRequest();
+
+
+            var filesBytes = new byte[form.Files.Count][];
+
+
+            await Parallel.ForAsync(0, filesBytes.Length, async (i, c) =>
+              {
+                  filesBytes[i] = await ReadFile(form.Files[i]);
+              });
+
+
+            await Api.AddProduct(smartphone, producer.ToString(), filesBytes);
             return Ok();
         }
 
@@ -51,24 +66,33 @@ namespace SmartShop.Controllers
         [Access(Role.Admin)]
         public async Task<IActionResult> AddMedia()
         {
-           var a=await HttpContext.Request.ReadFormAsync();
+            var form = await HttpContext.Request.ReadFormAsync();
 
-            var file = a.Files.GetFile("image");
-            if (a.TryGetValue("smartphoneId",  out var id) && file !=null )
+            var file = form.Files.GetFile("image");
+            if (form.TryGetValue("smartphoneId", out var id) && file != null)
             {
-                using var reader= new BinaryReader(file.OpenReadStream());
-                var data =  reader.ReadBytes((int)reader.BaseStream.Length);
-                await Api.AddMedia(data,int.Parse(id));
+                using var reader = new BinaryReader(file.OpenReadStream());
+                var data = reader.ReadBytes((int)reader.BaseStream.Length);
+                await Api.AddMedia(data, int.Parse(id));
                 return Ok();
             }
 
             return BadRequest();
         }
 
+
+        public async Task<byte[]> ReadFile(IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            var data = new byte[stream.Length];
+            await stream.ReadAsync(data.AsMemory(0));
+            return data;
+        }
+
         [HttpGet("api/images/{id}")]
         public async Task<IActionResult> GetMedia(string id)
         {
-            var extension = id[(id.LastIndexOf('.')+1)..];
+            var extension = id[(id.LastIndexOf('.') + 1)..];
             var media = await Api.GetMedia("images/" + id);
             return File(media, $"image/{extension}");
         }

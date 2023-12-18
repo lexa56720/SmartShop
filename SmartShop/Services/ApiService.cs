@@ -74,11 +74,24 @@ namespace SmartShop.Services
             await DB.Producers.AddAsync(producer);
             await DB.SaveChangesAsync();
         }
-        public async Task AddProduct(Smartphone smartphone)
+
+
+        public async Task AddProduct(Smartphone smartphone,string producerName, byte[][] images)
         {
+            var producer = await DB.Producers.FirstOrDefaultAsync(p => p.Name == producerName);
+            if (producer==null)
+            {
+                producer=new Producer() { Name=producerName };
+                await DB.Producers.AddAsync(producer);
+                await DB.SaveChangesAsync();      
+            }
+            smartphone.Producer = producer;
             smartphone.ReleaseDate = smartphone.ReleaseDate.ToUniversalTime();
             await DB.Smartphones.AddAsync(smartphone);
             await DB.SaveChangesAsync();
+
+            foreach (var image in images)
+               await AddMedia(image, smartphone.Id);
         }
         public async Task AddMedia(byte[] bytes, int smartphoneId)
         {
@@ -119,7 +132,7 @@ namespace SmartShop.Services
 
         private string GenerateImageUrl()
         {
-            return $"images/{RandomNumberGenerator.GetHexString(64)}.png";
+            return $"images/{Convert.ToBase64String(RandomNumberGenerator.GetBytes(32))}.png";
         }
     }
 }
