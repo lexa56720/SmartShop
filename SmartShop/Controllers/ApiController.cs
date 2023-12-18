@@ -44,9 +44,9 @@ namespace SmartShop.Controllers
 
 
             await Parallel.ForAsync(0, filesBytes.Length, async (i, c) =>
-              {
-                  filesBytes[i] = await ReadFile(form.Files[i]);
-              });
+            {
+                filesBytes[i] = await ReadFile(form.Files[i]);
+            });
 
 
             await Api.AddProduct(smartphone, producer.ToString(), filesBytes);
@@ -54,53 +54,27 @@ namespace SmartShop.Controllers
         }
 
 
-        [HttpPost("api/AddProducer")]
-        [Access(Role.Admin)]
-        public async Task<IActionResult> AddProducer(Producer producer)
-        {
-            await Api.AddProducer(producer);
-            return Ok();
-        }
-
-        [HttpPost("api/AddMedia")]
-        [Access(Role.Admin)]
-        public async Task<IActionResult> AddMedia()
-        {
-            var form = await HttpContext.Request.ReadFormAsync();
-
-            var file = form.Files.GetFile("image");
-            if (form.TryGetValue("smartphoneId", out var id) && file != null)
-            {
-                using var reader = new BinaryReader(file.OpenReadStream());
-                var data = reader.ReadBytes((int)reader.BaseStream.Length);
-                await Api.AddMedia(data, int.Parse(id));
-                return Ok();
-            }
-
-            return BadRequest();
-        }
-
-
-        public async Task<byte[]> ReadFile(IFormFile file)
-        {
-            using var stream = file.OpenReadStream();
-            var data = new byte[stream.Length];
-            await stream.ReadAsync(data.AsMemory(0));
-            return data;
-        }
-
-        [HttpGet("api/images/{id}")]
+        [HttpGet("/images/{id}")]
         public async Task<IActionResult> GetMedia(string id)
         {
             var extension = id[(id.LastIndexOf('.') + 1)..];
             var media = await Api.GetMedia("images/" + id);
             return File(media, $"image/{extension}");
         }
+
+
         private void SetCookie(User user)
         {
             HttpContext.Response.Cookies.Append("name", user.Name);
             HttpContext.Response.Cookies.Append("token", user.Token);
             HttpContext.Response.Cookies.Append("id", user.Id.ToString());
+        }
+        private async Task<byte[]> ReadFile(IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            var data = new byte[stream.Length];
+            await stream.ReadAsync(data.AsMemory(0));
+            return data;
         }
     }
 }

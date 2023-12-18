@@ -2,6 +2,7 @@
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace SmartShop.Services
 {
@@ -69,21 +70,14 @@ namespace SmartShop.Services
             return await DB.Producers.ToArrayAsync();
         }
 
-        public async Task AddProducer(Producer producer)
-        {
-            await DB.Producers.AddAsync(producer);
-            await DB.SaveChangesAsync();
-        }
-
-
-        public async Task AddProduct(Smartphone smartphone,string producerName, byte[][] images)
+        public async Task AddProduct(Smartphone smartphone, string producerName, byte[][] images)
         {
             var producer = await DB.Producers.FirstOrDefaultAsync(p => p.Name == producerName);
-            if (producer==null)
+            if (producer == null)
             {
-                producer=new Producer() { Name=producerName };
+                producer = new Producer() { Name = producerName };
                 await DB.Producers.AddAsync(producer);
-                await DB.SaveChangesAsync();      
+                await DB.SaveChangesAsync();
             }
             smartphone.Producer = producer;
             smartphone.ReleaseDate = smartphone.ReleaseDate.ToUniversalTime();
@@ -91,7 +85,7 @@ namespace SmartShop.Services
             await DB.SaveChangesAsync();
 
             foreach (var image in images)
-               await AddMedia(image, smartphone.Id);
+                await AddMedia(image, smartphone.Id);
         }
         public async Task AddMedia(byte[] bytes, int smartphoneId)
         {
@@ -107,10 +101,18 @@ namespace SmartShop.Services
 
         public async Task<byte[]> GetMedia(string url)
         {
-            var data= await DB.Medias.FirstOrDefaultAsync(m => m.Url == url);
+            var data = await DB.Medias.FirstOrDefaultAsync(m => m.Url == url);
             if (data == null)
                 return Array.Empty<byte>();
             return data.Data;
+        }
+
+        public async Task<Smartphone[]> GetSmartphones(int count, int offset)
+        {
+            return await DB.Smartphones.Skip(offset)
+                                       .Take(count)
+                                       .Include(s => s.Medias)
+                                       .ToArrayAsync();       
         }
 
         private bool IsLegal(int userId, string token)
@@ -125,14 +127,14 @@ namespace SmartShop.Services
         {
             return await DB.Users.FirstOrDefaultAsync(u => u.Login == login);
         }
+
         private string GenerateToken()
         {
             return RandomNumberGenerator.GetHexString(64);
         }
-
         private string GenerateImageUrl()
         {
-            return $"images/{Convert.ToBase64String(RandomNumberGenerator.GetBytes(32))}.png";
+            return $"images/{RandomNumberGenerator.GetHexString(16,true)}.png";
         }
     }
 }
