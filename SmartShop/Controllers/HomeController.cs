@@ -32,7 +32,17 @@ namespace SmartShop.Controllers
                 productsId = cart.Value.Split("|", StringSplitOptions.RemoveEmptyEntries)
                                        .Select(int.Parse)
                                        .ToArray();
-            ViewBag.CartContent = await Api.GetSmartphones(productsId);
+
+            ViewBag.CartContent = (await Api.GetSmartphones(productsId))
+                                   .Select(s=>new KeyValuePair<Smartphone,bool>(s,s.UnitsAvailable>0))
+                                   .ToArray();
+            return View();
+        }
+
+
+        [Route("Ordering/")]
+        public async Task<IActionResult> Ordering()
+        {
             return View();
         }
 

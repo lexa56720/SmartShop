@@ -1,6 +1,7 @@
 ﻿@using SmartShop.DataBase.Tables
 @{
     ViewData["Title"] = "Home Page";
+    User? User = ViewBag.User;
 }
 
 <div class="container">
@@ -20,13 +21,21 @@
                     </a>
                     <div class="card-footer">
                         <span class="d-block">
-                            @if (smartphone.UnitsAvailable > 0)
+                            @if (User!=null && User.Role==Role.Admin)
                             {
-                                <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Add to Cart</button>
+                                <button style="margin:5px;" id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect(Edit?@smartphone.Id);">Edit</button>
+                                <button style="margin:5px;" id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect(Remove?@smartphone.Id);">Delete</button>
                             }
                             else
                             {
-                                <span class="text-danger">Out of Stock</span>
+                                @if (smartphone.UnitsAvailable > 0)
+                                {
+                                    <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Add to Cart</button>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Out of Stock</span>
+                                }
                             }
                         </span>
                     </div>
@@ -36,36 +45,3 @@
     </div>
 </div>
 
-<style>
-    .card {
-        border: none;
-        transition: transform 0.2s ease-in-out;
-    }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-    .card-img-top {
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .btn {
-        width: 100%;
-    }
-
-    .text-danger {
-        font-weight: bold;
-    }
-
-    .card-link {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .stretched-link {
-        width: 100%;
-        display: block;
-    }
-</style>

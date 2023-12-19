@@ -128,12 +128,15 @@ namespace SmartShop.Services
                 .Include(s => s.Medias)
                 .Where(s => ids.Contains(s.Id)).ToArrayAsync();
 
-            var result = new Smartphone[ids.Length];
-
+            var result = new List<Smartphone>();
             for (int i = 0; i < ids.Length; i++)
-                result[i] = smartphones.First(s => s.Id == ids[i]);
+            {
+                var smartphone = smartphones.FirstOrDefault(s => s.Id == ids[i]);
+                if (smartphone != null)
+                    result.Add(smartphone);
+            }
 
-            return result;
+            return result.ToArray();
         }
         private bool IsLegal(int userId, string token)
         {

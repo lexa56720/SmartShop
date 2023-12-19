@@ -20,3 +20,35 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card {
+    border: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.btn {
+    width: 100%;
+}
+
+.text-danger {
+    font-weight: bold;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.stretched-link {
+    width: 100%;
+    display: block;
+}
