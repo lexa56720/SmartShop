@@ -6,12 +6,12 @@ namespace SmartShop.Controllers
 {
     public class CatalogController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Product(int id)
         {
-            return View();
-        }
-        public IActionResult Product(int id)
-        {
+            var smartphone = await Api.GetSmartphone(id);
+            if (smartphone == null)
+                return BadRequest();
+            ViewBag.Smartphone=smartphone;
             return View();
         }
     }

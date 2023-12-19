@@ -2,35 +2,70 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<div  >
-    @foreach (Smartphone smartphone in ViewBag.Smartphones)
-    {
-        <div style="display:grid; padding:20px; justify-content:stretch; ">
-            <div class="wrapper">
-                <div style="grid-row:span 2">
-                    <img width="100" height="100" src="@smartphone.Medias.First().Url" />
-                </div>
-                <div>
-                    <a href="Catalog/Product?id=@smartphone.Id"> @smartphone.Name</a>
-                </div>
-                <div>@smartphone.Description</div>
-            </div>
-        </div>
-    }
 
+<div class="container">
+    <div class="row">
+        @foreach (Smartphone smartphone in ViewBag.Smartphones)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <a href="Catalog/Product?id=@smartphone.Id" class="card-link">
+                        <img class="card-img-top" src="@smartphone.Medias.First().Url" alt="@smartphone.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@smartphone.Name</h5>
+                            <p class="card-text">@smartphone.Description</p>
+                            <p class="card-text">$@smartphone.Price</p>
+
+                        </div>
+                    </a>
+                    <div class="card-footer">
+                        <span class="d-block">
+                            @if (smartphone.UnitsAvailable > 0)
+                            {
+                                <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Add to Cart</button>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Out of Stock</span>
+                            }
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
+<style>
+    .card {
+        border: none;
+        transition: transform 0.2s ease-in-out;
+    }
 
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
 
-<style type="text/css">
-    .wrapper {
-        display: grid;
-        grid-template-columns: auto 70%;
-        grid-template-rows: auto auto;
-        justify-content: center;
-        gap: 20px;
-        width: auto;
-        background-color: #f9f9f9
+    .btn {
+        width: 100%;
+    }
+
+    .text-danger {
+        font-weight: bold;
+    }
+
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .stretched-link {
+        width: 100%;
+        display: block;
     }
 </style>

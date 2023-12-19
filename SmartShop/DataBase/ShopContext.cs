@@ -56,6 +56,7 @@ namespace SmartShop.DataBase
                 entity.Property(e => e.RamSize).HasColumnName("ram_size");
                 entity.Property(e => e.ReleaseDate).HasColumnName("release_date");
                 entity.Property(e => e.Description).HasColumnName("description");
+                entity.Property(e => e.UnitsAvailable).HasColumnName("units_available");
 
                 entity.HasOne(e => e.Producer).WithMany(p => p.Smartphones)
                       .HasForeignKey(s => s.ProducerId);

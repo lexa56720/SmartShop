@@ -11,6 +11,9 @@ namespace SmartShop.DataBase.Tables
         public DateTime ReleaseDate { get; set; }
 
         [Required]
+        public required int UnitsAvailable { get; set; }
+
+        [Required]
         public required int Price { get; set; }
 
         [Required]
@@ -28,7 +31,7 @@ namespace SmartShop.DataBase.Tables
         [Required]
         public required string Description { get; set; }
 
-        public virtual ICollection<Media> Medias { get; set; } = null!;
+        public virtual IList<Media> Medias { get; set; } = null!;
 
         public virtual Producer Producer { get; set; } = null!;
     }

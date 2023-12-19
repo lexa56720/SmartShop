@@ -4,56 +4,106 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SmartShop</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SmartShop.styles.css" asp-append-version="true" />
+    <style>
+        /* Custom styles can be added here */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Make body at least full height of the viewport */
+            margin: 0;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+            .user-actions a {
+                text-decoration: none;
+                color: #333;
+                margin-left: 20px;
+                font-size: 1.2rem;
+            }
+
+        button.cart-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto; /* Push footer to the bottom */
+            width: 100%;
+        }
+
+            footer a {
+                color: #333;
+                text-decoration: none;
+            }
+    </style>
 </head>
 <body>
-
     <header>
-        <nav class="navbar-light bg-white border-bottom box-shadow mb-3" style="min-height:50px">
-            <div class="d-flex justify-content-between">
-                <a class="navbar-brand" style="font-size:xx-large" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand mr-auto" style="font-size:32px; font-family:Arial" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
                 @if (ViewBag.IsHeaderDisabled == null || ViewBag.IsHeaderDisabled == false)
                 {
-                    <div class="d-flex flex-column" style="margin:10px;">
+                    <div class="user-actions">
+                        <button class="cart-btn ml-3" onclick="ButtonRedirect('Cart');">
+                            <img width="30px" src="~/resources/cart.png" alt="Cart">
+                        </button>
                         @if (ViewBag.User != null)
                         {
-                            <div>
-                                <a class="text-dark"  style="font-size:large; display:grid; justify-content: end" asp-area="" asp-controller="Profile" asp-action="Index">@ViewBag.User.Name</a>
-                            </div>
-
-                            <div>
-                                <a href="#" style="display:grid; justify-content: end" onclick="LogOut();return false;">Выйти</a>
-                            </div>
+                            <a asp-area="" asp-controller="Profile" asp-action="Index">@ViewBag.User.Name</a>
+                            <a href="#" onclick="LogOut(); return false;">Logout</a>
                         }
                         else
                         {
-                            <a style="padding:10px" asp-area="" asp-controller="Auth" asp-action="Login">Войти</a>
+                            <a asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
                         }
                     </div>
                 }
             </div>
-
-
         </nav>
     </header>
 
-
-
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container mt-4">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top">
         <div class="container">
             &copy; 2023 - SmartShop - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

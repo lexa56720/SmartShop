@@ -23,6 +23,18 @@ namespace SmartShop.Controllers
             return View();
         }
 
+        [Route("Cart/")]
+        public async Task<IActionResult> Cart()
+        {
+            var cart = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "Cart");
+            var productsId = Array.Empty<int>();
+            if (!cart.Equals(default(KeyValuePair<string, string>)))
+                productsId = cart.Value.Split("|", StringSplitOptions.RemoveEmptyEntries)
+                                       .Select(int.Parse)
+                                       .ToArray();
+            ViewBag.CartContent = await Api.GetSmartphones(productsId);
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

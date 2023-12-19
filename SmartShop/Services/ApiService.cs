@@ -112,9 +112,29 @@ namespace SmartShop.Services
             return await DB.Smartphones.Skip(offset)
                                        .Take(count)
                                        .Include(s => s.Medias)
-                                       .ToArrayAsync();       
+                                       .ToArrayAsync();
         }
+        public async Task<Smartphone?> GetSmartphone(int id)
+        {
+            return await DB.Smartphones
+                .Include(s => s.Producer)
+                .Include(s => s.Medias)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+        public async Task<Smartphone[]> GetSmartphones(int[] ids)
+        {
+            var smartphones = await DB.Smartphones
+                .Include(s => s.Producer)
+                .Include(s => s.Medias)
+                .Where(s => ids.Contains(s.Id)).ToArrayAsync();
 
+            var result = new Smartphone[ids.Length];
+
+            for (int i = 0; i < ids.Length; i++)
+                result[i] = smartphones.First(s => s.Id == ids[i]);
+
+            return result;
+        }
         private bool IsLegal(int userId, string token)
         {
             return DB.Users.Any(u => u.Id == userId && u.Token == token);
@@ -134,7 +154,7 @@ namespace SmartShop.Services
         }
         private string GenerateImageUrl()
         {
-            return $"images/{RandomNumberGenerator.GetHexString(16,true)}.png";
+            return $"/images/{RandomNumberGenerator.GetHexString(16, true)}.png";
         }
     }
 }

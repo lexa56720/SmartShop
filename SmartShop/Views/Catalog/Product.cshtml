@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using SmartShop.DataBase.Tables
+
 @{
+    Smartphone smartphone = ViewBag.Smartphone;
+    ViewData["Title"] = smartphone.Name; // Set the title to the smartphone's name
 }
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <img class="img-fluid" src="@smartphone.Medias[0].Url" alt="@smartphone.Name">
+        </div>
+        <div class="col-md-6">
+            <h2>@smartphone.Name</h2>
+            <p>@smartphone.Description</p>
+            <ul class="list-unstyled">
+                <li><strong>Release Date:</strong> @smartphone.ReleaseDate.ToShortDateString()</li>
+                <li><strong>Memory Size (GB):</strong> @smartphone.MemorySize</li>
+                <li><strong>RAM Size (GB):</strong> @smartphone.RamSize</li>
+                <li><strong>Megapixels:</strong> @smartphone.MegaPixels</li>
+                <li><strong>Producer:</strong> @smartphone.Producer.Name</li>
+                <li>  <br /></li>
+                <li><strong>Price:</strong> $@smartphone.Price</li>
+            </ul>
+
+            @if (smartphone.UnitsAvailable > 0)
+            {
+                <button id="AddToCartButton @smartphone.Id" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Add to Cart</button>
+            }
+            else
+            {
+                <span class="text-danger">Out of Stock</span>
+            }
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap CDN (place this in your layout or include separately) -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">

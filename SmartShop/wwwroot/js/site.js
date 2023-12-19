@@ -4,12 +4,10 @@
 // Write your JavaScript code.
 
 
-function GetApiUrl(method)
-{
+function GetApiUrl(method) {
     return document.location.origin + '/api/' + method + '?';
 }
-async function Login(login, pass)
-{
+async function Login(login, pass) {
     document.getElementById('warning').style.visibility = 'hidden';
 
     const url = GetApiUrl("Login") +
@@ -34,8 +32,7 @@ async function Login(login, pass)
 
     window.open(document.location.origin, "_self");
 }
-async function Register(name, login, pass)
-{
+async function Register(name, login, pass) {
     document.getElementById('warning').style.visibility = 'hidden';
 
     const url = GetApiUrl("Register") +
@@ -62,50 +59,101 @@ async function Register(name, login, pass)
 
     window.open(document.location.origin, "_self");
 }
-
-async function SendForm(formId,method)
+function AddToCart(id)
 {
+    let element = document.getElementById("AddToCartButton " + id);
+    element.disabled = true;
+    element.innerHTML = "Added to cart";
+
+    InsertToCart(id);
+}
+function InsertToCart(id)
+{
+    let cookie = GetCookie('Cart');
+    if (cookie === null)
+        cookie = '';
+    SetCookie('Cart', cookie + '|' + id,3)
+}
+function RemoveFromCart(index)
+{
+    let cookie = GetCookie('Cart');
+    if (cookie === null)
+        return;
+    let products = cookie.split('|').filter(function (part) { return !!part; });  
+    products.splice(index, 1);
+    SetCookie('Cart', products.join('|'), 3);
+}
+async function SendForm(formId, method) {
     document.getElementById(formId);
 
     const inputTags = document.getElementById(formId).querySelectorAll('input');
     const formData = new FormData();
 
-    for (const inputTag of inputTags)
-    {
-        if (inputTag.type == 'file')
-        {
+    for (const inputTag of inputTags) {
+        if (inputTag.type == 'file') {
             for (const innerFile of inputTag.files)
                 formData.append(innerFile.name, innerFile);
         }
-        else
-        {
+        else {
             formData.append(inputTag.name, inputTag.value);
         }
-      
+
     }
 
-    const url = "api/"+method;
+    const url = "api/" + method;
 
     const response = await fetch(url,
         {
             method: 'POST',
-            body:formData
+            body: formData
         });
 
 
     if (!response.ok)
-        return;
+        return false;
+    return true;
 }
 
-function LogOut()
-{
+function LogOut() {
     DeleteCookie("id");
     DeleteCookie("token");
     DeleteCookie("name");
 
     location.reload();
 }
-function DeleteCookie(name)
-{
+
+function SetCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+function GetCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+
+        while (c.charAt(0) == ' ')
+            c = c.substring(1, c.length);
+
+        if (c.indexOf(nameEQ) == 0)
+            return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+function DeleteCookie(name) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
+function ButtonRedirect(destination)
+{
+    var url = document.location.origin;
+    window.location=url+"/"+destination;
+}
+
+
+
