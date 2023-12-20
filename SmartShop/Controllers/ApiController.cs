@@ -39,42 +39,21 @@ namespace SmartShop.Controllers
             if (!form.TryGetValue("producerName", out var producer))
                 return BadRequest();
 
-
             var filesBytes = new byte[form.Files.Count][];
-
 
             await Parallel.ForAsync(0, filesBytes.Length, async (i, c) =>
             {
                 filesBytes[i] = await ReadFile(form.Files[i]);
             });
 
-
             await Api.AddProduct(smartphone, producer.ToString(), filesBytes);
             return Ok();
         }
-
-
-        [HttpGet("/images/{id}")]
-        public async Task<IActionResult> GetMedia(string id)
-        {
-            var extension = id[(id.LastIndexOf('.') + 1)..];
-            var media = await Api.GetMedia("images/" + id);
-            return File(media, $"image/{extension}");
-        }
-
-
         private void SetCookie(User user)
         {
             HttpContext.Response.Cookies.Append("name", user.Name);
             HttpContext.Response.Cookies.Append("token", user.Token);
             HttpContext.Response.Cookies.Append("id", user.Id.ToString());
-        }
-        private async Task<byte[]> ReadFile(IFormFile file)
-        {
-            using var stream = file.OpenReadStream();
-            var data = new byte[stream.Length];
-            await stream.ReadAsync(data.AsMemory(0));
-            return data;
         }
     }
 }

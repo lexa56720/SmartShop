@@ -43,7 +43,7 @@ namespace SmartShop.Services
                 Login = login,
                 Password = pass,
                 Name = name,
-                Token = GenerateToken(),
+                Token = GenerateToken(64),
                 Role = Role.User
             };
             await DB.Users.AddAsync(user);
@@ -58,7 +58,7 @@ namespace SmartShop.Services
             if (user == null || user.Password != pass)
                 return false;
 
-            user.Token = GenerateToken();
+            user.Token = GenerateToken(64);
             await DB.SaveChangesAsync();
 
             User = user;
@@ -138,6 +138,31 @@ namespace SmartShop.Services
 
             return result.ToArray();
         }
+
+        public async Task<Order?> CreateOrder(User user, int[] smartphoneIds)
+        {
+            var orderContent = new List<Smartphone>();
+            for (int i = 0; i < smartphoneIds.Length; i++)
+            {
+                var smartphone = DB.Smartphones.Find(smartphoneIds[i]);
+                if (smartphone == null || smartphone.UnitsAvailable < 1)
+                    continue;
+                smartphone.UnitsAvailable--;
+                orderContent.Add(smartphone);
+            }
+            var order = new Order()
+            {
+                User = user,
+                Code = GenerateToken(4),
+                OrderDate = DateTime.UtcNow,
+                Price = orderContent.Sum(c => c.Price),
+                Smartphones = orderContent,
+                Status = OrderStatus.Ordered,
+
+            };
+            await DB.Orders.AddAsync(order);
+            return order;
+        }
         private bool IsLegal(int userId, string token)
         {
             return DB.Users.Any(u => u.Id == userId && u.Token == token);
@@ -151,9 +176,9 @@ namespace SmartShop.Services
             return await DB.Users.FirstOrDefaultAsync(u => u.Login == login);
         }
 
-        private string GenerateToken()
+        private string GenerateToken(int size)
         {
-            return RandomNumberGenerator.GetHexString(64);
+            return RandomNumberGenerator.GetHexString(size);
         }
         private string GenerateImageUrl()
         {

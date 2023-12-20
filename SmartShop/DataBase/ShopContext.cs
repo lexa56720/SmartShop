@@ -7,7 +7,8 @@ namespace SmartShop.DataBase
     {
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
+            
+          //  Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -92,7 +93,7 @@ namespace SmartShop.DataBase
                 entity.Property(e => e.Status).HasColumnName("status");
                 entity.Property(e => e.Price).HasColumnName("price");
                 entity.Property(e => e.UserId).HasColumnName("user_id");
-
+                entity.Property(e => e.Code).HasColumnName("code");
 
                 entity.HasMany(e => e.Smartphones).WithMany();
             });

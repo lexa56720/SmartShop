@@ -21,5 +21,13 @@ namespace SmartShop.Controllers
             ViewBag.User = Api.User;
             return base.View(viewName, model);
         }
+
+        protected async Task<byte[]> ReadFile(IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            var data = new byte[stream.Length];
+            await stream.ReadAsync(data.AsMemory(0));
+            return data;
+        }
     }
 }

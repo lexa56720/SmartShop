@@ -113,7 +113,6 @@ async function SendForm(formId, method) {
         return false;
     return true;
 }
-
 function LogOut() {
     DeleteCookie("id");
     DeleteCookie("token");
@@ -121,7 +120,6 @@ function LogOut() {
 
     location.reload();
 }
-
 function SetCookie(name, value, days) {
     var expires = "";
     if (days) {
@@ -148,11 +146,15 @@ function GetCookie(name) {
 function DeleteCookie(name) {
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
-
 function ButtonRedirect(destination)
 {
     var url = document.location.origin;
     window.location=url+"/"+destination;
+}
+
+function CreateOrder(...ids)
+{
+   
 }
 
 

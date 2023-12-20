@@ -17,5 +17,6 @@ namespace SmartShop.Controllers
             ViewBag.IsHeaderDisabled = true;
             return View();
         }
+
     }
 }
