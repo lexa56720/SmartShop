@@ -14,7 +14,7 @@ namespace SmartShop.Services.Auth
             if (IsHaveAccess(context, api))
                 await Next(context);
             else
-                context.Response.Redirect("/");
+                context.Response.StatusCode = 400;
         }
 
         public bool IsHaveAccess(HttpContext context, ApiService api)

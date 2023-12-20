@@ -10,11 +10,6 @@ namespace SmartShop.Controllers
 {
     public class HomeController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        public async Task<IActionResult> Index()
-        {
-            ViewBag.Smartphones = await Api.GetSmartphones(50, 0);
-            return View();
-        }
 
         public IActionResult Privacy()
         {

@@ -1,24 +1,24 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .card {
@@ -51,4 +51,111 @@ body {
 .stretched-link {
     width: 100%;
     display: block;
+}
+
+
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border-top: 1px solid #ccc;
+}
+
+    .tabcontent:first-child {
+        display: block;
+    }
+
+.tab {
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+    }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+.notification {
+    display: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.success {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.failure {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+}
+
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+
+button.cart-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: auto; /* Push footer to the bottom */
+    width: 100%;
+}
+
+    footer a {
+        color: #333;
+        text-decoration: none;
+    }
+/* Custom styles for carousel control buttons */
+.carousel-control-prev,
+.carousel-control-next {
+    color: black; /* Set the color to black */
 }

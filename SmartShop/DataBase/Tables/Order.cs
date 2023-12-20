@@ -7,6 +7,7 @@ namespace SmartShop.DataBase.Tables
         Ordered=0,
         Shipping=1,
         Arrived=2,
+        Completed=3,
     }
     public class Order
     {

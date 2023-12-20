@@ -12,6 +12,7 @@ namespace SmartShop.Controllers
             if (Api.User != null && Api.User.Role == Role.Admin)
                 return await AdminPanel();
 
+            ViewBag.Orders=Api.Get
             return View();
         }
 

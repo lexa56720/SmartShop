@@ -4,4 +4,31 @@
 @{
 }
 
-<h5>Ваш код заказа: @ViewBag.Order</h5>
+<div class="container mt-4">
+    <div class="alert alert-success" role="alert">
+        <h2 class="alert-heading">THANK YOU!</h2>
+
+        <h5 class="alert-heading">Order Successfully Created</h5>
+        <hr>
+        <p class="mb-0">Your order, @ViewBag.Order, has been successfully created. Thank you for shopping with us!</p>
+    </div>
+</div>
+
+<style>
+    /* Custom styles can be added here */
+    /* Example styles for the success message */
+    .alert-success {
+        background-color: #d4edda; /* Change to your preferred color */
+        color: #155724; /* Change to your preferred text color */
+        border-color: #c3e6cb; /* Change to your preferred border color */
+    }
+
+    .alert-heading {
+        font-size: 1.5rem; /* Change to your preferred heading size */
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    DeleteCookie("Cart");
+</script>

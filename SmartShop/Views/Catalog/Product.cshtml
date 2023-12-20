@@ -7,19 +7,39 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-6">
-            <img class="img-fluid" src="@smartphone.Medias[0].Url" alt="@smartphone.Name">
+            <div id="mainImageCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var media in smartphone.Medias)
+                    {
+                        <div class="carousel-item
+                         @if (media == smartphone.Medias[0])
+                         {
+                    <text>active</text>
+}">
+                                    <img class="d-block w-100" src="@media.Url" alt="@smartphone.Name">
+                                </div>
+                    }
+                </div>
+                <a class="carousel-control-prev" href="#mainImageCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon"  aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#mainImageCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
         </div>
         <div class="col-md-6">
-            <h2>@smartphone.Name</h2>
-            <p>@smartphone.Description</p>
+            <h2 class="mb-3">@smartphone.Name</h2>
+            <p class="mb-4">@smartphone.Description</p>
             <ul class="list-unstyled">
-                <li><strong>Release Date:</strong> @smartphone.ReleaseDate.ToShortDateString()</li>
-                <li><strong>Memory Size (GB):</strong> @smartphone.MemorySize</li>
-                <li><strong>RAM Size (GB):</strong> @smartphone.RamSize</li>
-                <li><strong>Megapixels:</strong> @smartphone.MegaPixels</li>
-                <li><strong>Producer:</strong> @smartphone.Producer.Name</li>
-                <li>  <br /></li>
-                <li><strong>Price:</strong> $@smartphone.Price</li>
+                <li class="mb-2"><strong>Release Date:</strong> @smartphone.ReleaseDate.ToShortDateString()</li>
+                <li class="mb-2"><strong>Memory Size (GB):</strong> @smartphone.MemorySize</li>
+                <li class="mb-2"><strong>RAM Size (GB):</strong> @smartphone.RamSize</li>
+                <li class="mb-2"><strong>Megapixels:</strong> @smartphone.MegaPixels</li>
+                <li class="mb-2"><strong>Producer:</strong> @smartphone.Producer.Name</li>
+                <li class="mb-2"><strong>Price:</strong> $@smartphone.Price</li>
             </ul>
 
             @if (smartphone.UnitsAvailable > 0)
@@ -30,10 +50,35 @@
             {
                 <span class="text-danger">Out of Stock</span>
             }
-
+            @if (smartphone.Medias.Count > 1)
+            {
+                <div class="row mt-3">
+                    @foreach (var media in smartphone.Medias)
+                    {
+                        <div class="col-md-4">
+                            <img class="img-fluid mb-2" src="@media.Url" alt="@smartphone.Name" onclick="selectImage(@media.Url);">
+                        </div>
+                    }
+                </div>
+            }
         </div>
     </div>
 </div>
+
+<script>
+    function selectImage(imageUrl) {
+        $('#mainImageCarousel .carousel-inner').html(`<div class="carousel-item active"><img class="d-block w-100" src="${imageUrl}" alt="Selected Image"></div>`);
+    }
+</script>
+
+<style>
+    span.carousel-control-next-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e");
+    }
+
+    span.carousel-control-prev-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5L4.25 4l2.5-2.5L5.25 0z'/%3e%3c/svg%3e");
+</style>
 
 <!-- Bootstrap CDN (place this in your layout or include separately) -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">

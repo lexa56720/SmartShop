@@ -9,7 +9,7 @@ namespace SmartShop.Services
     public class ApiService
     {
         public User? User { get; private set; }
-        public ShopContext DB { get; }
+        private ShopContext DB { get; }
 
         public ApiService(HttpContext context, ShopContext db)
         {
@@ -70,7 +70,51 @@ namespace SmartShop.Services
             return await DB.Producers.ToArrayAsync();
         }
 
-        public async Task AddProduct(Smartphone smartphone, string producerName, byte[][] images)
+        public async Task<bool> DeleteSmartphone(int id)
+        {
+            try
+            {
+                await DB.Smartphones.Where(s => s.Id == id).ExecuteDeleteAsync();
+                await DB.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+     
+        }
+
+        public async Task<bool> EditSmartphone(Smartphone smartphone, string producerName)
+        {
+            var producer = await DB.Producers.FirstOrDefaultAsync(p => p.Name == producerName);
+            if (producer == null)
+            {
+                producer = new Producer() { Name = producerName };
+                await DB.Producers.AddAsync(producer);
+                await DB.SaveChangesAsync();
+            }
+            smartphone.Producer = producer;
+            smartphone.ReleaseDate = smartphone.ReleaseDate.ToUniversalTime();
+            var dbPhone = await DB.Smartphones.FirstOrDefaultAsync(s => s.Id == smartphone.Id);
+
+            if (dbPhone == null)
+                return false;
+
+            dbPhone.Name = smartphone.Name;
+            dbPhone.Description = smartphone.Description;
+            dbPhone.Price = smartphone.Price;
+            dbPhone.Producer = producer;
+            dbPhone.MegaPixels = smartphone.MegaPixels;
+            dbPhone.RamSize = smartphone.RamSize;
+            dbPhone.MemorySize = smartphone.MemorySize;
+            dbPhone.ReleaseDate = smartphone.ReleaseDate;
+            dbPhone.UnitsAvailable = smartphone.UnitsAvailable;
+
+            await DB.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> AddSmartphone(Smartphone smartphone, string producerName, byte[][] images)
         {
             var producer = await DB.Producers.FirstOrDefaultAsync(p => p.Name == producerName);
             if (producer == null)
@@ -86,6 +130,8 @@ namespace SmartShop.Services
 
             foreach (var image in images)
                 await AddMedia(image, smartphone.Id);
+
+            return true;
         }
         public async Task AddMedia(byte[] bytes, int smartphoneId)
         {
@@ -98,7 +144,6 @@ namespace SmartShop.Services
             await DB.Medias.AddAsync(media);
             await DB.SaveChangesAsync();
         }
-
         public async Task<byte[]> GetMedia(string url)
         {
             var data = await DB.Medias.FirstOrDefaultAsync(m => m.Url == url);
@@ -113,13 +158,6 @@ namespace SmartShop.Services
                                        .Take(count)
                                        .Include(s => s.Medias)
                                        .ToArrayAsync();
-        }
-        public async Task<Smartphone?> GetSmartphone(int id)
-        {
-            return await DB.Smartphones
-                .Include(s => s.Producer)
-                .Include(s => s.Medias)
-                .FirstOrDefaultAsync(s => s.Id == id);
         }
         public async Task<Smartphone[]> GetSmartphones(int[] ids)
         {
@@ -137,6 +175,13 @@ namespace SmartShop.Services
             }
 
             return result.ToArray();
+        }
+        public async Task<Smartphone?> GetSmartphone(int id)
+        {
+            return await DB.Smartphones
+                .Include(s => s.Producer)
+                .Include(s => s.Medias)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Order?> CreateOrder(User user, int[] smartphoneIds)
@@ -163,6 +208,8 @@ namespace SmartShop.Services
             await DB.Orders.AddAsync(order);
             return order;
         }
+
+
         private bool IsLegal(int userId, string token)
         {
             return DB.Users.Any(u => u.Id == userId && u.Token == token);

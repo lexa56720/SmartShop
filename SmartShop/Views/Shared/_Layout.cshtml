@@ -1,4 +1,7 @@
 ﻿<!DOCTYPE html>
+@{
+    User User = ViewBag.User;
+}
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,31 +9,9 @@
     <title>@ViewData["Title"] - SmartShop</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/SmartShop.styles.css" asp-append-version="true" />
     <style>
-        /* Custom styles can be added here */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Make body at least full height of the viewport */
-            margin: 0;
-        }
-
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-        }
-
-        .navbar-brand {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
         .user-actions {
             display: flex;
             align-items: center;
@@ -43,38 +24,24 @@
                 font-size: 1.2rem;
             }
 
-        button.cart-btn {
-            border: none;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        footer {
-            background-color: #f8f9fa;
-            padding: 20px 0;
-            text-align: center;
-            margin-top: auto; /* Push footer to the bottom */
-            width: 100%;
-        }
-
-            footer a {
-                color: #333;
-                text-decoration: none;
-            }
     </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand mr-auto" style="font-size:32px; font-family:Arial" asp-area="" asp-controller="Home" asp-action="Index">SmartShop</a>
+                <a class="navbar-brand mr-auto" style="font-size:32px; font-family:Arial" asp-area="" asp-controller="Catalog" asp-action="Index">SmartShop</a>
                 @if (ViewBag.IsHeaderDisabled == null || ViewBag.IsHeaderDisabled == false)
                 {
                     <div class="user-actions">
-                        <button class="cart-btn ml-3" onclick="ButtonRedirect('Cart');">
-                            <img width="30px" src="~/resources/cart.png" alt="Cart">
-                        </button>
-                        @if (ViewBag.User != null)
+                        @if (User == null || User.Role != Role.Admin)
+                        {
+                            <button class="cart-btn ml-3" onclick="ButtonRedirect('Cart');">
+                                <img width="30px" src="~/resources/cart.png" alt="Cart">
+                            </button>
+                        }
+
+                        @if (User != null)
                         {
                             <a asp-area="" asp-controller="Profile" asp-action="Index">@ViewBag.User.Name</a>
                             <a href="#" onclick="LogOut(); return false;">Logout</a>

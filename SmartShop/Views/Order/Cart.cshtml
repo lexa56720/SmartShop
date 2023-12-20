@@ -53,7 +53,8 @@
 </div>
 
 <script>
-    function RemoveFromCartPage(id, price) {
+    function RemoveFromCartPage(id, price) 
+    {
         document.getElementById(id).outerHTML = "";
         var totalPrice = document.getElementById('TotalPrice');
 
@@ -63,10 +64,7 @@
         totalPrice.innerText = "Total price: $" + (strOut - price);
     }
 </script>
-<!-- Bootstrap CDN (place this in your layout or include separately) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<!-- Font Awesome CDN for the 'times' icon -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 <style>
     .delete-btn {
         background-color: transparent;

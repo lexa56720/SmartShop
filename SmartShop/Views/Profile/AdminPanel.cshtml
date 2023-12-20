@@ -1,242 +1,132 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Your head content remains the same -->
-    <style>
-        /* Your existing styles */
-        /* Additional styles for tab content */
-        .tabcontent {
-            display: none;
-            padding: 20px;
-            border-top: 1px solid #ccc;
-        }
+﻿
 
-            .tabcontent:first-child {
-                display: block;
-            }
+<div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'productsTab')" id="defaultOpen">Products</button>
+    <button class="tablinks" onclick="openTab(event, 'producersTab')">Producers</button>
+</div>
 
-        .tab {
-            overflow: hidden;
-            background-color: #f1f1f1;
-        }
+<div id="productsTab" class="tabcontent">
+    <form id="product" action="api/AddProduct" method="post">
 
-            .tab button {
-                background-color: inherit;
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-            }
+        <div class="form-group">
+            <label for="unitsAvailable">Units svailable</label>
+            <input type="number" class="form-control" id="unitsAvailable" name="unitsAvailable" required>
+        </div>
 
-                .tab button:hover {
-                    background-color: #ddd;
+        <div class="form-group">
+            <label for="releaseDate">Release Date</label>
+            <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" id="price" name="price" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea type="text" class="form-control" id="description" name="description" required>
+
+                </textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="memorySize">Memory Size (GB)</label>
+            <input type="number" class="form-control" id="memorySize" name="memorySize" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ramSize">RAM Size (GB)</label>
+            <input type="number" class="form-control" id="ramSize" name="ramSize" required>
+        </div>
+
+        <div class="form-group">
+            <label for="megaPixels">Megapixels</label>
+            <input type="number" class="form-control" id="megaPixels" name="megaPixels" required>
+        </div>
+
+        <div class="form-group">
+            <label for="producerId">Producer</label>
+            <input class="form-control" list="producers" id="producerName" name="producerName" required>
+            <datalist id="producers">
+                @foreach (var producer in ViewBag.Producers)
+                {
+                    <option>@producer.Name</option>
                 }
+            </datalist>
+        </div>
 
-                .tab button.active {
-                    background-color: #ccc;
-                }
-        /* Additional styles for form */
-        .form-group {
-            margin-bottom: 15px;
-        }
+        <div class="form-group" style="margin: 10px;">
+            <label for="image">Images</label>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg" required multiple onchange="previewImages(event)" />
+            <div id="image-preview" style="margin-top: 10px;"></div>
+        </div>
 
-            .form-group label {
-                font-weight: bold;
-            }
-    </style>
-</head>
-<body>
-    <!-- Your HTML content -->
-    <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'productsTab')" id="defaultOpen">Products</button>
-        <button class="tablinks" onclick="openTab(event, 'producersTab')">Producers</button>
-    </div>
 
-    <div id="productsTab" class="tabcontent">
-        <form id="product" action="api/AddProduct" method="post">
+        <button type="button" class="btn btn-primary" onclick="TrySendForm('product','AddProduct','succsess','failure');">Submit</button>
 
-            <div class="form-group">
-                <label for="unitsAvailable">Units svailable</label>
-                <input type="number" class="form-control" id="unitsAvailable" name="unitsAvailable" required>
-            </div>
+        <div class="form-group" style="margin: 10px;">
+            <div id="failure" class="failure" style="visibility:hidden">Fail</div>
+            <div id="succsess" class="success" style="visibility:hidden">Succsess</div>
+        </div>
+    </form>
+</div>
 
-            <div class="form-group">
-                <label for="releaseDate">Release Date</label>
-                <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
-            </div>
+<div id="producersTab" class="tabcontent">
+    <form action="api/AddProducer" method="post">
 
-            <div class="form-group">
-                <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" name="price" required>
-            </div>
+        <div class="form-group">
+            <label for="name">Producer</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
 
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" name="description" required>
-            </div>
 
-            <div class="form-group">
-                <label for="memorySize">Memory Size (GB)</label>
-                <input type="number" class="form-control" id="memorySize" name="memorySize" required>
-            </div>
+<script>
+    function previewImages(event) {
+        var preview = document.getElementById('image-preview');
+        preview.innerHTML = ''; // Clear previous previews
 
-            <div class="form-group">
-                <label for="ramSize">RAM Size (GB)</label>
-                <input type="number" class="form-control" id="ramSize" name="ramSize" required>
-            </div>
+        var files = event.target.files;
 
-            <div class="form-group">
-                <label for="megaPixels">Megapixels</label>
-                <input type="number" class="form-control" id="megaPixels" name="megaPixels" required>
-            </div>
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
 
-            <div class="form-group">
-                <label for="producerId">Producer</label>
-                <input class="form-control" list="producers" id="producerName" name="producerName" required>
-                <datalist id="producers">
-                    @foreach (var producer in ViewBag.Producers)
-                    {
-                        <option>@producer.Name</option>
-                    }
-                </datalist>
-            </div>
-
-            <div class="form-group" style="margin: 10px;">
-                <label for="image">Images</label>
-                <input type="file" id="image" name="image" accept="image/png, image/jpeg" required multiple onchange="previewImages(event)" />
-                <div id="image-preview" style="margin-top: 10px;"></div>
-                <input type="hidden" id="image-order" name="imageOrder" />
-            </div>
-            <button type="button" class="btn btn-primary" onclick="SendForm('product','AddProduct');">Submit</button>
-
-        </form>
-    </div>
-
-    <div id="producersTab" class="tabcontent">
-        <form action="api/AddProducer" method="post">
-
-            <div class="form-group">
-                <label for="name">Producer</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-
-    <style>
-        .draggable {
-            cursor: pointer;
-        }
-    </style>
-
-    <script>
-        function previewImages(event) {
-            var preview = document.getElementById('image-preview');
-            preview.innerHTML = ''; // Clear previous previews
-
-            var files = event.target.files;
-
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    var img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.maxWidth = '100px'; // Set max width for preview images
-                    img.style.marginRight = '10px'; // Add some space between images
-                    img.classList.add('draggable'); // Add draggable class to images
-                    img.setAttribute('draggable', true); // Make images draggable
-                    img.addEventListener('dragstart', handleDragStart, false); // Add event listeners for drag events
-                    img.addEventListener('dragover', handleDragOver, false);
-                    img.addEventListener('drop', handleDrop, false);
-                    preview.appendChild(img);
-                    updateImageOrder(); // Update the hidden input field with the current order
-                }
-
-                reader.readAsDataURL(file);
-            }
-        }
-
-        var dragSrcEl = null;
-
-        function handleDragStart(e) {
-            dragSrcEl = this;
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.outerHTML);
-        }
-
-        function handleDragOver(e) {
-            if (e.preventDefault) {
-                e.preventDefault();
-            }
-            e.dataTransfer.dropEffect = 'move';
-            return false;
-        }
-
-        function handleDrop(e) {
-            if (e.stopPropagation) {
-                e.stopPropagation();
-            }
-            if (dragSrcEl !== this) {
-                dragSrcEl.outerHTML = this.outerHTML;
-                this.outerHTML = e.dataTransfer.getData('text/html');
-                var preview = document.getElementById('image-preview');
-                var images = preview.getElementsByClassName('draggable');
-                for (var i = 0; i < images.length; i++) {
-                    images[i].addEventListener('dragstart', handleDragStart, false);
-                    images[i].addEventListener('dragover', handleDragOver, false);
-                    images[i].addEventListener('drop', handleDrop, false);
-                }
-                updateImageOrder(); // Update the hidden input field with the current order after reordering
-            }
-            return false;
-        }
-
-        function updateImageOrder() {
-            var preview = document.getElementById('image-preview');
-            var images = preview.getElementsByClassName('draggable');
-            var imageOrder = [];
-            for (var i = 0; i < images.length; i++) {
-                var src = images[i].getAttribute('src');
-                imageOrder.push(src);
-            }
-            var imageOrderInput = document.getElementById('image-order');
-            imageOrderInput.value = imageOrder.join(',');
-        }
-
-        function openTab(evt, tabName)
-        {
-            // Declare all variables
-            var i, tabcontent, tablinks;
-
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100px'; // Set max width for preview images
+                img.style.marginRight = '10px'; // Add some space between images
+                preview.appendChild(img);
             }
 
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
+            reader.readAsDataURL(file);
+        }
+    }
 
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
 
-        // Automatically open the default tab
-        document.getElementById("defaultOpen").click();
-    </script>
-</body>
-</html>
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    document.getElementById("defaultOpen").click();
+</script>
+

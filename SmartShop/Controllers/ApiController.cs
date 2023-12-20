@@ -46,8 +46,32 @@ namespace SmartShop.Controllers
                 filesBytes[i] = await ReadFile(form.Files[i]);
             });
 
-            await Api.AddProduct(smartphone, producer.ToString(), filesBytes);
-            return Ok();
+            if (await Api.AddSmartphone(smartphone, producer.ToString(), filesBytes))
+                return Ok();
+            return BadRequest();
+        }
+
+        [HttpPost("api/EditProduct")]
+        [Access(Role.Admin)]
+        public async Task<IActionResult> EditProduct(Smartphone smartphone)
+        {
+            var form = await HttpContext.Request.ReadFormAsync();
+
+            if (!form.TryGetValue("producerName", out var producer))
+                return BadRequest();
+
+            if (await Api.EditSmartphone(smartphone, producer.ToString()))
+                return Ok();
+            return BadRequest();
+        }
+
+        [HttpPost("api/DeleteProduct")]
+        [Access(Role.Admin)]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            if (await Api.DeleteSmartphone(id))
+                return Ok();
+            return BadRequest();
         }
         private void SetCookie(User user)
         {

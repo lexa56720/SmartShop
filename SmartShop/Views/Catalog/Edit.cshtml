@@ -1,0 +1,67 @@
+﻿
+@{
+    Smartphone smartphone = ViewBag.Smartphone;
+    Producer[] producers = ViewBag.Producers;
+}
+<div id="productsTab" class="tabcontent">
+    <form id="product" action="api/AddProduct" method="post">
+
+        <div class="form-group">
+            <label for="unitsAvailable">Units available</label>
+            <input type="number" class="form-control" value="@smartphone.UnitsAvailable" id="unitsAvailable" name="unitsAvailable" required>
+        </div>
+
+        <div class="form-group">
+            <label for="releaseDate">Release Date</label>
+            <input type="date" class="form-control" value="@smartphone.ReleaseDate.ToLocalTime().ToString("yyyy-MM-dd")" id="releaseDate" name="releaseDate" required />
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" class="form-control" value="@smartphone.Price" id="price" name="price" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" value="@smartphone.Name" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea type="text" class="form-control" id="description" name="description" required>@smartphone.Description </textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="memorySize">Memory Size (GB)</label>
+            <input type="number" class="form-control" id="memorySize" value="@smartphone.MemorySize" name="memorySize" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ramSize">RAM Size (GB)</label>
+            <input type="number" class="form-control" id="ramSize" value="@smartphone.RamSize" name="ramSize" required>
+        </div>
+
+        <div class="form-group">
+            <label for="megaPixels">Megapixels</label>
+            <input type="number" class="form-control" id="megaPixels" value="@smartphone.MegaPixels" name="megaPixels" required>
+        </div>
+
+        <div class="form-group">
+            <label for="producerId">Producer</label>
+            <input class="form-control" list="producers" id="producerName" value="@smartphone.Producer.Name" name="producerName" required>
+            <datalist id="producers">
+                @foreach (var producer in producers)
+                {
+                    <option>@producer.Name</option>
+                }
+            </datalist>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="TrySendForm('product','EditProduct?id=@smartphone.Id','succsess','failure');">Save</button>
+
+        <div class="form-group" style="margin: 10px;">
+            <div id="failure" class="failure" style="visibility:hidden">Fail</div>
+            <div id="succsess" class="success" style="visibility:hidden">Succsess</div>
+        </div>
+    </form>
+</div>

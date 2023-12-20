@@ -21,10 +21,17 @@
                     </a>
                     <div class="card-footer">
                         <span class="d-block">
-                            @if (User!=null && User.Role==Role.Admin)
+                            @if (User != null && User.Role == Role.Admin)
                             {
-                                <button style="margin:5px;" id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect(Edit?@smartphone.Id);">Edit</button>
-                                <button style="margin:5px;" id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect(Remove?@smartphone.Id);">Delete</button>
+                                <button style="margin:5px; background-color: #ffc107; border-color: #ffc107; color: #fff;"
+                                        id="EditButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect('Edit?id=@smartphone.Id');">
+                                    Edit
+                                </button>
+
+                                <button style="margin:5px; background-color: #dc3545; border-color: #dc3545; color: #fff;"
+                                        id="DeleteButton @smartphone.Id" href="#" class="btn btn-primary" onclick="DeleteProduct(@smartphone.Id);">
+                                    Delete
+                                </button>
                             }
                             else
                             {
