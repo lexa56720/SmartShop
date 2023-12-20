@@ -108,11 +108,14 @@
                 </datalist>
             </div>
 
-            <div class="form-group" style="margin:10px;">
+            <div class="form-group" style="margin: 10px;">
                 <label for="image">Images</label>
-                <input type="file" id="image" name="image" accept="image/png, image/jpeg" required multiple />
+                <input type="file" id="image" name="image" accept="image/png, image/jpeg" required multiple onchange="previewImages(event)" />
+                <div id="image-preview" style="margin-top: 10px;"></div>
+                <input type="hidden" id="image-order" name="imageOrder" />
             </div>
             <button type="button" class="btn btn-primary" onclick="SendForm('product','AddProduct');">Submit</button>
+
         </form>
     </div>
 
@@ -128,8 +131,88 @@
         </form>
     </div>
 
+    <style>
+        .draggable {
+            cursor: pointer;
+        }
+    </style>
 
     <script>
+        function previewImages(event) {
+            var preview = document.getElementById('image-preview');
+            preview.innerHTML = ''; // Clear previous previews
+
+            var files = event.target.files;
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100px'; // Set max width for preview images
+                    img.style.marginRight = '10px'; // Add some space between images
+                    img.classList.add('draggable'); // Add draggable class to images
+                    img.setAttribute('draggable', true); // Make images draggable
+                    img.addEventListener('dragstart', handleDragStart, false); // Add event listeners for drag events
+                    img.addEventListener('dragover', handleDragOver, false);
+                    img.addEventListener('drop', handleDrop, false);
+                    preview.appendChild(img);
+                    updateImageOrder(); // Update the hidden input field with the current order
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        var dragSrcEl = null;
+
+        function handleDragStart(e) {
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.outerHTML);
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            if (dragSrcEl !== this) {
+                dragSrcEl.outerHTML = this.outerHTML;
+                this.outerHTML = e.dataTransfer.getData('text/html');
+                var preview = document.getElementById('image-preview');
+                var images = preview.getElementsByClassName('draggable');
+                for (var i = 0; i < images.length; i++) {
+                    images[i].addEventListener('dragstart', handleDragStart, false);
+                    images[i].addEventListener('dragover', handleDragOver, false);
+                    images[i].addEventListener('drop', handleDrop, false);
+                }
+                updateImageOrder(); // Update the hidden input field with the current order after reordering
+            }
+            return false;
+        }
+
+        function updateImageOrder() {
+            var preview = document.getElementById('image-preview');
+            var images = preview.getElementsByClassName('draggable');
+            var imageOrder = [];
+            for (var i = 0; i < images.length; i++) {
+                var src = images[i].getAttribute('src');
+                imageOrder.push(src);
+            }
+            var imageOrderInput = document.getElementById('image-order');
+            imageOrderInput.value = imageOrder.join(',');
+        }
+
         function openTab(evt, tabName) {
             // Declare all variables
             var i, tabcontent, tablinks;
