@@ -1,0 +1,93 @@
+﻿@using System.Text
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model ITableWorker;
+@{
+    var columns = Model.Columns.Keys.ToArray();
+
+    var cells = await Model.GetAll();
+    string valuesRequest;
+}
+@functions {
+
+    public string GetHtmlFormValues(string rowIndex, string[] columnNames)
+    {
+        var sb = new StringBuilder();
+        for (int column = 0; column < columnNames.Length; column++)
+        {
+            sb.Append(@$"document.getElementById('{columnNames[column]}_{rowIndex}').value");
+            if (column + 1 < columnNames.Length)
+                sb.Append(',');
+        }
+        return sb.ToString();
+    }
+}
+<table>
+    <tr>
+        @foreach (var column in Model.Columns)
+        {
+            <th>
+                <div style="width:80%;">
+                    @column.Key <br /> @column.Value
+                </div>
+            </th>
+        }
+    </tr>
+
+
+    @for (int row = 0; row * columns.Length < cells.Length; row++)
+    {
+        <tr>
+            <form id="row_@row">
+                @for (int column = 0; column < columns.Length; column++)
+                {
+                <td>
+                    <input type="text" id="@columns[column]_@row" value="@cells[row * columns.Length +column]">
+                </td>
+                }
+
+                @{
+                    valuesRequest = GetHtmlFormValues(row.ToString(), columns);
+                }
+
+
+            <td>
+                <input type="button" value="Сохранить" onclick="ChangeStatus(Save('@Model.TableName','@cells[row * columns.Length]',@valuesRequest))">
+            </td>
+
+            <td>
+                <input type="button" value="Удалить" onclick="ChangeStatus( Delete('@Model.TableName','@cells[row * columns.Length]',@valuesRequest))">
+            </td>
+
+            </form>
+        </tr>
+    }
+
+    <tr>
+        <form id="row_append">
+
+            @foreach (var column in Model.Columns)
+            {
+            <td>
+                <input type="text" id="@(column.Key)_append">
+            </td>
+            }
+
+            @{
+                valuesRequest = GetHtmlFormValues("append", Model.Columns.Keys.ToArray());
+            }
+
+        <td>
+            <input type="button" value="Добавить" onclick="ChangeStatus(Add('@Model.TableName',@valuesRequest))">
+        </td>
+
+
+        </form>
+    </tr>
+</table>
+
+<div class="form-group" style="margin: 10px;">
+    <div id="failureTable" class="failure" style="visibility:hidden">Fail</div>
+    <div id="succsessTable" class="success" style="visibility:hidden">Succsess</div>
+</div>

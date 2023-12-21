@@ -1,8 +1,11 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Admin panel";
+}
+@model AdminPanelViewModel;
 
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'productsTab')" id="defaultOpen">Products</button>
-    <button class="tablinks" onclick="openTab(event, 'ordersTab')">Orders</button>
+    <button class="tablinks" onclick="openTab(event, 'tablesTab')">Tables</button>
 </div>
 
 <div id="productsTab" class="tabcontent">
@@ -54,7 +57,7 @@
             <label for="producerId">Producer</label>
             <input class="form-control" list="producers" id="producerName" name="producerName" required>
             <datalist id="producers">
-                @foreach (var producer in ViewBag.Producers)
+                @foreach (var producer in Model.Producers)
                 {
                     <option>@producer.Name</option>
                 }
@@ -77,20 +80,17 @@
     </form>
 </div>
 
-<div id="producersTab" class="tabcontent">
-    <form action="api/AddProducer" method="post">
+<div id="tablesTab" class="tabcontent">
 
-        <div class="form-group">
-            <label for="name">Producer</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-        </div>
+    @Html.DropDownListFor(m => m.Tables, new SelectList(Model.Tables.Where(t => t != "OrderSmartphone")), "Выберите таблицу", new { @onchange = "Load(this.value)" })
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div id="content"></div>
 </div>
 
 
 <script>
+    document.getElementById("defaultOpen").click();
+
     function previewImages(event) {
         var preview = document.getElementById('image-preview');
         preview.innerHTML = ''; // Clear previous previews
@@ -127,8 +127,5 @@
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
-
-
-    document.getElementById("defaultOpen").click();
 </script>
 

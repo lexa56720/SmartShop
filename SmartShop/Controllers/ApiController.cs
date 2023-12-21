@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
+using SmartShop.Models;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
 using System.Buffers.Text;
@@ -72,6 +74,89 @@ namespace SmartShop.Controllers
             if (await Api.DeleteSmartphone(id))
                 return Ok();
             return BadRequest();
+        }
+
+        [Access(Role.Admin)]
+        [HttpPost("api/Load")]
+        public IActionResult Load(string? table)
+        {
+            if (table == null)
+                return BadRequest();
+
+            var tableEntity = GetTable(table);
+            if (tableEntity != null)
+                return PartialView("TableView", tableEntity);
+
+            return BadRequest();
+        }
+
+        [Access(Role.Admin)]
+        [HttpPost("api/Save")]
+        public async Task<IActionResult> Save(string? table)
+        {
+            if (table == null)
+                return BadRequest();
+
+            var body = await ReadRequestBody(Request);
+            var args = body.Split(';');
+
+            var tableEntity = GetTable(table);
+            if (tableEntity != null && (await tableEntity.UpdateRow(args)))
+                return PartialView("TableView", tableEntity);
+
+            return BadRequest();
+        }
+
+        [Access(Role.Admin)]
+        [HttpPost("api/Delete")]
+        public async Task<IActionResult> Delete(string? table)
+        {
+            if (table == null)
+                return BadRequest();
+
+            var body = await ReadRequestBody(Request);
+            var args = body.Split(';');
+
+            var tableEntity = GetTable(table);
+            if (tableEntity != null && (await tableEntity.DeleteRow(args)))
+                return PartialView("TableView", tableEntity);
+
+            return BadRequest();
+        }
+
+        [Access(Role.Admin)]
+        [HttpPost("api/Add")]
+        public async Task<IActionResult> Add(string? table)
+        {
+            if (table == null)
+                return BadRequest();
+
+            var body = await ReadRequestBody(Request);
+            var args = body.Split(';');
+
+            var tableEntity = GetTable(table);
+            if (tableEntity != null && (await tableEntity.AddRow(args)))
+                return PartialView("TableView", tableEntity);
+
+            return BadRequest();
+        }
+
+        private async Task<string> ReadRequestBody(HttpRequest request)
+        {
+            var sr = new StreamReader(request.Body);
+            return await sr.ReadToEndAsync();
+        }
+
+        private ITableWorker? GetTable(string tableName)
+        {
+            var tableEntity = DB.Model.GetEntityTypes()
+                  .Where(t => t.GetTableName() == tableName)
+                  .First();
+
+            Type type = tableEntity.ClrType;
+            var workerType = typeof(TableWorker<>).MakeGenericType(type);
+            var worker = Activator.CreateInstance(workerType, tableEntity, context);
+            return worker as ITableWorker;
         }
         private void SetCookie(User user)
         {

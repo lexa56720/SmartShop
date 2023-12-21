@@ -79,7 +79,8 @@ function RemoveFromCart(index) {
     products.splice(index, 1);
     SetCookie('Cart', products.join('|'), 3);
 }
-async function TrySendForm(formId, method, succsessElementId, failedElementId) {
+async function TrySendForm(formId, method, succsessElementId, failedElementId)
+{
     document.getElementById(failedElementId).style.visibility = 'hidden';
     document.getElementById(succsessElementId).style.visibility = 'hidden';
 
@@ -87,8 +88,8 @@ async function TrySendForm(formId, method, succsessElementId, failedElementId) {
         document.getElementById(succsessElementId).style.visibility = 'visible';
     else
         document.getElementById(failedElementId).style.visibility = 'visible';
-
 }
+
 async function SendForm(formId, method) {
     document.getElementById(formId);
 
@@ -177,4 +178,113 @@ async function DeleteProduct(id)
        return window.alert("Delete error");;
 
     window.open(document.location.origin, "_self");
+}
+
+
+async function TrySendForm(formId, method, succsessElementId, failedElementId)
+{
+    document.getElementById(failedElementId).style.visibility = 'hidden';
+    document.getElementById(succsessElementId).style.visibility = 'hidden';
+
+    if (await SendForm(formId, method))
+        document.getElementById(succsessElementId).style.visibility = 'visible';
+    else
+        document.getElementById(failedElementId).style.visibility = 'visible';
+}
+
+async function Load(list)
+{
+    const url = GetApiUrl("Load") +
+        new URLSearchParams({
+            'table': list,
+        });
+    const response = await fetch(url,
+        {
+            method: "POST",
+            headers:
+            {
+                "Content-type": "text/html; charset=UTF-8"
+            }
+        });
+
+    if (!response.ok)
+        return false;
+
+    var element = document.getElementById("content");
+    var text = await response.text();
+    element.innerHTML = text;
+
+    return true;
+}
+async function Save(...args)
+{
+    const response = await fetch(`api/Save?table=${args[0]}`,
+        {
+            method: "POST",
+            body: args.slice(1, args.length).join(";"),
+            headers:
+            {
+                "Content-type": "text/html; charset=UTF-8"
+            }
+        });
+
+    if (!response.ok)
+        return false;
+
+    var element = document.getElementById("content");
+    var text = await response.text();
+    element.innerHTML = text;
+
+    return true;
+}
+async function Delete(...args)
+{
+    const response = await fetch(`api/Delete?table=${args[0]}`,
+        {
+            method: "POST",
+            body: args.slice(1, args.length).join(";"),
+            headers:
+            {
+                "Content-type": "text/html; charset=UTF-8"
+            }
+        });
+
+    if (!response.ok)
+        return false;
+
+    var element = document.getElementById("content");
+    var text = await response.text();
+    element.innerHTML = text;
+
+    return true;
+}
+async function Add(...args)
+{
+    const response = await fetch(`api/Add?table=${args[0]}`,
+        {
+            method: "POST",
+            body: args.slice(1, args.length).join(";"),
+            headers:
+            {
+                "Content-type": "text/html; charset=UTF-8"
+            }
+        });
+
+    if (!response.ok)
+        return false;
+
+    var element = document.getElementById("content");
+    var text = await response.text();
+    element.innerHTML = text;
+
+    return true;
+}
+async function ChangeStatus(value) {
+    document.getElementById('failureTable').style.visibility = 'hidden';
+    document.getElementById('succsessTable').style.visibility = 'hidden';
+
+    if (await value)
+        document.getElementById('succsessTable').style.visibility = 'visible';
+    else
+        document.getElementById('failureTable').style.visibility = 'visible';
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
+using SmartShop.Models;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
 
@@ -15,15 +16,13 @@ namespace SmartShop.Controllers
                 return await AdminPanel();
 
 
-            ViewBag.Orders =await Api.GetOrders(Api.User.Id);
+            ViewBag.Orders = await Api.GetOrders(Api.User.Id);
             return View();
         }
         [Access(Role.Admin)]
         public async Task<IActionResult> AdminPanel()
         {
-            ViewBag.Producers =await Api.GetProducers();
-
-            return View("AdminPanel");
+            return View("AdminPanel", new AdminPanelViewModel(context, await Api.GetProducers()));
         }
     }
 }

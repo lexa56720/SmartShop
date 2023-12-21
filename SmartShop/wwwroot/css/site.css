@@ -119,7 +119,7 @@ body {
     color: #333;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    min-height: 100vh;
     margin: 0;
 }
 
@@ -159,3 +159,83 @@ footer {
 .carousel-control-next {
     color: black; /* Set the color to black */
 }
+
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tbody {
+    display: block;
+    max-height: 720px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    width: 1%;
+    white-space: nowrap;
+    padding: 8px; /* Add padding to the cells */
+}
+
+th {
+    background: #333;
+    color: #fff;
+}
+
+
+
+/* Style buttons */
+.button {
+    background: #F76D57;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .button:hover {
+        background: #F94E3E;
+    }
+
+/* Add some hover effects */
+
+
+select {
+    width: 100%;
+    padding: 15px; /* Increase padding for more height */
+    font-size: 18px; /* Increase font size */
+    border: none;
+    border-radius: 5px;
+    color: #333;
+    box-shadow: 0 0 5px black;
+}
+
+    /* Increase padding and font size for focused select elements */
+    select:focus {
+        padding: 15px;
+        font-size: 18px;
+        outline: none;
+    }
