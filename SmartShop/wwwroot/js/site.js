@@ -129,7 +129,7 @@ function LogOut() {
     DeleteCookie("token");
     DeleteCookie("name");
     DeleteCookie("Cart");
-    location.reload();
+    window.location = document.location.origin;
 }
 function SetCookie(name, value, days) {
     var expires = "";

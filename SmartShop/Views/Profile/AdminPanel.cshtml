@@ -2,7 +2,7 @@
 
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'productsTab')" id="defaultOpen">Products</button>
-    <button class="tablinks" onclick="openTab(event, 'producersTab')">Producers</button>
+    <button class="tablinks" onclick="openTab(event, 'ordersTab')">Orders</button>
 </div>
 
 <div id="productsTab" class="tabcontent">
@@ -127,6 +127,8 @@
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }
+
+
     document.getElementById("defaultOpen").click();
 </script>
 

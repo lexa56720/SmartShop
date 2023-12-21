@@ -82,9 +82,18 @@ namespace SmartShop.Services
             {
                 return false;
             }
-     
+
         }
 
+        public async Task<Order[]> GetOrders(int userId)
+        {
+            var orders = DB.Users.Include(u => u.Orders)
+                                 .ThenInclude(o=>o.Smartphones)
+                                 .Where(u => u.Id == userId)
+                                 .SelectMany(u => u.Orders);
+
+            return await orders.ToArrayAsync();
+        }
         public async Task<bool> EditSmartphone(Smartphone smartphone, string producerName)
         {
             var producer = await DB.Producers.FirstOrDefaultAsync(p => p.Name == producerName);
@@ -206,6 +215,7 @@ namespace SmartShop.Services
 
             };
             await DB.Orders.AddAsync(order);
+            await DB.SaveChangesAsync(); 
             return order;
         }
 
