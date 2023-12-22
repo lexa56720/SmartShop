@@ -61,7 +61,7 @@ async function Register(name, login, pass) {
 function AddToCart(id) {
     let element = document.getElementById("AddToCartButton " + id);
     element.disabled = true;
-    element.innerHTML = "Added to cart";
+    element.innerHTML = "Добавлен в корзину";
 
     InsertToCart(id);
 }

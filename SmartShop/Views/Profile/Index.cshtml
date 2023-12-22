@@ -4,6 +4,24 @@
     ViewData["Title"] = "Профиль";
 }
 @model ProfileViewModel;
+@functions {
+    string GetStatus(OrderStatus status)
+    {
+        switch (status)
+        {
+            case OrderStatus.Ordered:
+                return "Заказан";
+            case OrderStatus.Shipping:
+                return "В пути";
+            case OrderStatus.Arrived:
+                return "Готов к выдаче";
+            case OrderStatus.Completed:
+                return "Выдан";
+
+        }
+        return string.Empty;
+    }
+}
 
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'currentOrders')" id="defaultOpen">Текущие заказы</button>
@@ -19,13 +37,14 @@
                 <h4>Код заказа: @order.Code</h4>
                 <h5>Дата оформления: @order.OrderDate.ToLocalTime().ToString("dddd, dd MMMM yyyy, HH:mm")</h5>
                 <ul>
-                   @foreach(var phone in order.Smartphones)
+                    @foreach (var phone in order.Smartphones)
                     {
-                        <li>@phone.Name  $@phone.Price</li>
+                        <li>@phone.Name</li>
                     }
-                    
+
                 </ul>
-                <p>Статус: @order.Status.ToString()</p>
+                <h6>Общая сумма: $@order.Price</h6>
+                <h5>Статус: @GetStatus(order.Status)</h5>
                 <div class="status-bar">
                     <div class="status-marker @order.Status.ToString().ToLower()"></div>
                 </div>
@@ -45,11 +64,11 @@
                 <ul>
                     @foreach (var phone in order.Smartphones)
                     {
-                        <li>@phone.Name  $@phone.Price</li>
+                        <li>@phone.Name</li>
                     }
-
                 </ul>
-                <p>Статус: @order.Status.ToString()</p>
+                <h6>Общая сумма: $@order.Price</h6>
+                <h5>Статус: @GetStatus(order.Status)</h5>
                 <div class="status-bar">
                     <div class="status-marker @order.Status.ToString().ToLower()"></div>
                 </div>

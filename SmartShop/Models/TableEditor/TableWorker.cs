@@ -21,10 +21,14 @@ namespace SmartShop.Models.TableEditor
         private Dictionary<Type, Func<string, object>> Converter = new()
         {
             { typeof(int),s=>int.Parse(s) },
-            { typeof(float),s=>Convert.ToSingle(s, CultureInfo.InvariantCulture.NumberFormat)},
+            { typeof(float),s=>Convert.ToSingle(s, CultureInfo.CurrentCulture.NumberFormat)},
             { typeof(string),s=>s },
-            { typeof(DateTime),s=>DateTime.Parse(s) },
-                { typeof(OrderStatus),s=>Enum.Parse<OrderStatus>(s) },
+            { typeof(DateTime),s=>
+            {
+                var time= DateTime.Parse(s);
+                return  DateTime.SpecifyKind(time, DateTimeKind.Utc);
+            }},
+            { typeof(OrderStatus),s=>Enum.Parse<OrderStatus>(s) },
         };
 
 

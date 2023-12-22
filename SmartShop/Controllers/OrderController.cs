@@ -23,8 +23,14 @@ namespace SmartShop.Controllers
         public async Task<IActionResult> Ordering()
         {
             var productsId = GetCartContentIds();
+            if (productsId.Length < 1)
+                return BadRequest();
 
-            return View(await Api.CreateOrder(Api.User, productsId));
+            var order = await Api.CreateOrder(Api.User, productsId);
+            if (order == null)
+                return BadRequest();
+
+            return View(new OrderingViewModel(order));
         }
 
         private int[] GetCartContentIds()

@@ -146,7 +146,7 @@ footer {
     background-color: #f8f9fa;
     padding: 20px 0;
     text-align: center;
-    margin-top: auto; /* Push footer to the bottom */
+    margin-top: auto; 
     width: 100%;
 }
 
@@ -154,10 +154,9 @@ footer {
         color: #333;
         text-decoration: none;
     }
-/* Custom styles for carousel control buttons */
 .carousel-control-prev,
 .carousel-control-next {
-    color: black; /* Set the color to black */
+    color: black; 
 }
 
 
@@ -194,7 +193,7 @@ th, td {
     text-align: center;
     width: 1%;
     white-space: nowrap;
-    padding: 8px; /* Add padding to the cells */
+    padding: 8px; 
 }
 
 th {
@@ -202,8 +201,6 @@ th {
     color: #fff;
 }
 
-
-/* Style buttons */
 .button {
     background: #F76D57;
     color: #fff;
@@ -219,20 +216,16 @@ th {
         background: #F94E3E;
     }
 
-/* Add some hover effects */
-
-
 select {
     width: 100%;
-    padding: 15px; /* Increase padding for more height */
-    font-size: 18px; /* Increase font size */
+    padding: 15px; 
+    font-size: 18px;
     border: none;
     border-radius: 5px;
     color: #333;
     box-shadow: 0 0 5px black;
 }
 
-    /* Increase padding and font size for focused select elements */
     select:focus {
         padding: 15px;
         font-size: 18px;
@@ -280,7 +273,6 @@ select {
     transition: width 0.3s ease-in-out;
 }
 
-/* Status-specific colors */
 .ordered {
     width: 25%;
     background-color: #ffc107;
@@ -299,4 +291,60 @@ select {
 .completed {
     width: 100%;
     background-color: #007bff;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.alert-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.form-check-input {
+    margin: 5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+    .form-check-input:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+.form-check-label {
+    margin-left: 30px;
+    margin-top: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.filters-panel {
+    background-color: white;
+    position: sticky;
+    padding: 5px;
+    top: 15px;
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.filter-scroll {
+    height: 90%;
+    overflow-y: auto;
+}
+
+.filter-scroll-content {
+    padding-right: 15px;
 }

@@ -91,52 +91,6 @@
         </div>
     </div>
 </div>
-<style>
-    .form-check-input {
-        margin: 5px;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        outline: none;
-        cursor: pointer;
-        margin-right: 8px;
-    }
-
-        .form-check-input:checked {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-    .form-check-label {
-        margin-left: 30px;
-        margin-top: 5px;
-        display: inline-block;
-        vertical-align: middle;
-        cursor: pointer;
-    }
-
-    .filters-panel {
-        background-color: white;
-        position: sticky;
-        padding: 5px;
-        top: 15px;
-        height: calc(100vh - 40px);
-        overflow-y: auto;
-    }
-
-    .filter-scroll {
-        height: 90%;
-        overflow-y: auto;
-    }
-
-    .filter-scroll-content {
-        padding-right: 15px;
-    }
-</style>
 <script>
     function NextPage(page) {
         ButtonRedirect('Catalog?page=' + (page + 1) +'&'+ GetFilters('ProducersFilterForm'));

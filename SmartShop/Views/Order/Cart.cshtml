@@ -31,37 +31,27 @@
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <button class="btn btn-sm delete-btn" onclick="RemoveFromCart(@i);RemoveFromCartPage('card item @i','@smartphone.Key.Price');">
+                        <button class="btn btn-sm delete-btn" onclick="RemoveFromCart(@i);location.reload();">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                 </div>
             </div>
         }
-        <div class="text-right">
-            <h4 id="TotalPrice">Итоговая цена: $@(Model.CartContent.Sum(s => s.Key.Price))</h4>
+        @if (Model.CartContent != null && Model.CartContent.Length > 0)
+        {
+            <div id="payment" class="text-right">
+                <h4 id="TotalPrice">Итоговая цена: $@(Model.CartContent.Sum(s => s.Key.Price))</h4>
 
-            <button class="btn btn-primary" onclick="@(ViewBag.User!=null?"ButtonRedirect('Ordering')":"ButtonRedirect('Auth/Login')")">
-                Оплатить
-            </button>
-        </div>
+                <button class="btn btn-primary" onclick="@(ViewBag.User!=null?"ButtonRedirect('Ordering')":"ButtonRedirect('Auth/Login')")">
+                    Оплатить
+                </button>
+            </div>
+        }
     }
     else
     {
         <p>Пусто</p>
     }
 </div>
-
-<script>
-    function RemoveFromCartPage(id, price) 
-    {
-        document.getElementById(id).outerHTML = "";
-        var totalPrice = document.getElementById('TotalPrice');
-
-        var searchIndex = totalPrice.innerText.indexOf("$");
-        var strOut = totalPrice.innerText.substring(searchIndex + 1); //this is where the magic happens :)
-
-        totalPrice.innerText = "Итоговая цена: $" + (strOut - price);
-    }
-</script>
 
