@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartShop.DataBase;
+using SmartShop.DataBase.Tables;
 using SmartShop.Models;
 using SmartShop.Services;
+using SmartShop.Services.Auth;
 
 namespace SmartShop.Controllers
 {
@@ -22,6 +24,7 @@ namespace SmartShop.Controllers
         }
 
         [Route("Edit")]
+        [Access(Role.Admin)]
         public async Task<IActionResult> Edit(int id)
         {
             var smartphone = await Api.GetSmartphone(id);

@@ -16,7 +16,7 @@ namespace SmartShop.DataBase.Tables
         [Required]
         public int UserId { get; set; }
         [Required]
-        public required int Price { get; set; }
+        public required float Price { get; set; }
         [Required]
         public required string Code { get; set; }
         [Required]

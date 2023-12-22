@@ -14,7 +14,7 @@ namespace SmartShop.DataBase.Tables
         public required int UnitsAvailable { get; set; }
 
         [Required]
-        public required int Price { get; set; }
+        public required float Price { get; set; }
 
         [Required]
         public required string Name { get; set; }

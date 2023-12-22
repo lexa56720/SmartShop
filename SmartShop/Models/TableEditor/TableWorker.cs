@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Newtonsoft.Json.Linq;
 using SmartShop.DataBase.Tables;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Reflection;
 
 namespace SmartShop.Models.TableEditor
@@ -20,8 +21,9 @@ namespace SmartShop.Models.TableEditor
         private Dictionary<Type, Func<string, object>> Converter = new()
         {
             { typeof(int),s=>int.Parse(s) },
+            { typeof(float),s=>Convert.ToSingle(s, CultureInfo.InvariantCulture.NumberFormat)},
             { typeof(string),s=>s },
-            { typeof(DateTime),s=>DateTime.Parse(s).ToUniversalTime() },
+            { typeof(DateTime),s=>DateTime.Parse(s) },
                 { typeof(OrderStatus),s=>Enum.Parse<OrderStatus>(s) },
         };
 

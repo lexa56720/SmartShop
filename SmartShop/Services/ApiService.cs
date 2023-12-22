@@ -207,7 +207,7 @@ namespace SmartShop.Services
             var order = new Order()
             {
                 User = user,
-                Code = GenerateToken(4),
+                Code = GenerateToken(6),
                 OrderDate = DateTime.UtcNow,
                 Price = orderContent.Sum(c => c.Price),
                 Smartphones = orderContent,
@@ -239,7 +239,7 @@ namespace SmartShop.Services
         }
         private string GenerateImageUrl()
         {
-            return $"/images/{RandomNumberGenerator.GetHexString(16, true)}";
+            return $"/images/{RandomNumberGenerator.GetHexString(16, true)}.png";
         }
     }
 }

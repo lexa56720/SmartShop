@@ -6,6 +6,7 @@ using SmartShop.Models.TableEditor;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
 using System.Buffers.Text;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 
@@ -34,14 +35,14 @@ namespace SmartShop.Controllers
 
 
         [Access(Role.Admin)]
-        [HttpPost("api/AddProduct")]   
+        [HttpPost("api/AddProduct")]
         public async Task<IActionResult> AddProduct(Smartphone smartphone)
         {
             var form = await HttpContext.Request.ReadFormAsync();
 
-            if (!form.TryGetValue("producerName", out var producer))
+            if (!form.TryGetValue("producerName", out var producer) || !form.TryGetValue("price", out var price))
                 return BadRequest();
-
+            smartphone.Price = Convert.ToSingle(price, CultureInfo.InvariantCulture.NumberFormat);
             var filesBytes = new byte[form.Files.Count][];
 
             await Parallel.ForAsync(0, filesBytes.Length, async (i, c) =>
@@ -55,14 +56,14 @@ namespace SmartShop.Controllers
         }
 
         [Access(Role.Admin)]
-        [HttpPost("api/EditProduct")]     
+        [HttpPost("api/EditProduct")]
         public async Task<IActionResult> EditProduct(Smartphone smartphone)
         {
             var form = await HttpContext.Request.ReadFormAsync();
 
-            if (!form.TryGetValue("producerName", out var producer))
+            if (!form.TryGetValue("producerName", out var producer) || !form.TryGetValue("price", out var price))
                 return BadRequest();
-
+            smartphone.Price = Convert.ToSingle(price, CultureInfo.InvariantCulture.NumberFormat);
             if (await Api.EditSmartphone(smartphone, producer.ToString()))
                 return Ok();
             return BadRequest();

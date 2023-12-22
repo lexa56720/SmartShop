@@ -35,8 +35,7 @@
 
         <div class="form-group">
             <label for="description">Описание</label>
-            <textarea type="text" class="form-control" id="description" name="description" required>
-            </textarea>
+            <textarea type="text" class="form-control" id="description" name="description" required></textarea>
         </div>
 
 
@@ -69,15 +68,15 @@
 
         <div class="form-group" style="margin: 10px;">
             <label for="image">Фото</label>
-            <input type="file" id="image" name="image" accept="image/png, image/jpeg" required multiple onchange="previewImages(event)" />
+            <input type="file" id="image" name="image" accept="image/png" required multiple onchange="previewImages(event)" />
             <div id="image-preview" style="margin-top: 10px;"></div>
         </div>
 
         <button type="button" class="btn btn-primary" onclick="TrySendForm('product','AddProduct','succsess','failure');">Добавить</button>
 
         <div class="form-group" style="margin: 10px;">
-            <div id="failure" class="failure" style="visibility:hidden">Успешно добавлен</div>
-            <div id="succsess" class="success" style="visibility:hidden">Ошибка</div>
+            <div id="failure" class="failure" style="visibility:hidden">Ошибка</div>
+            <div id="succsess" class="success" style="visibility:hidden">Успешно добавлен</div>
         </div>
     </form>
 </div>

@@ -8,7 +8,7 @@ namespace SmartShop.DataBase
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
             
-          //  Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
