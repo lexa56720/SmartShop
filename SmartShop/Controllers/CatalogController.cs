@@ -9,10 +9,27 @@ namespace SmartShop.Controllers
 {
     public class CatalogController(ILogger<HomeController> logger, ShopContext context, ApiService api) : ShopController(logger, context, api)
     {
-        public async Task<IActionResult> Index()
+        private readonly int ProductsPerPage = 9;
+
+        public async Task<IActionResult> Index(int page, int[] producerFilters)
         {
-            var smartphones = await Api.GetSmartphones(50, 0);     
-            return View(new CatalogViewModel(smartphones, smartphones.Length, 0));
+            var smartphones = await Api.GetSmartphones();
+            var producers = await Api.GetProducers();
+            var producerFilter = await Api.GetProducers(producerFilters);
+
+            if (producerFilter.Length > 0)
+                smartphones = smartphones.Where(s => producerFilter.Contains(s.Producer)).ToArray();
+
+
+            var totalCount = smartphones.Count();
+            if (page > totalCount / ProductsPerPage)
+                return BadRequest();
+
+            smartphones = smartphones.Skip(page * ProductsPerPage)
+                                     .Take(ProductsPerPage).ToArray();
+
+            return View(new CatalogViewModel(producerFilter, producers, smartphones, ProductsPerPage,
+                                             page * ProductsPerPage, totalCount));
         }
 
         public async Task<IActionResult> Product(int id)

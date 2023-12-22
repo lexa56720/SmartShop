@@ -288,3 +288,25 @@ async function ChangeStatus(value) {
     else
         document.getElementById('failureTable').style.visibility = 'visible';
 }
+
+function GetFilters(containerId) {
+    const container = document.getElementById(containerId);
+    const checkedCheckboxes = container.querySelectorAll('input[type="checkbox"]');
+    const values = [];
+
+    checkedCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked)
+            values.push(`${checkbox.getAttribute('name')}=${checkbox.value}`);
+    });
+
+    return values.join('&');
+
+}
+function ApplyFilter() {
+    var filters = GetFilters('ProducersFilterForm');
+    if (filters.length === 0)
+        ButtonRedirect('Catalog/Index' );
+
+
+    ButtonRedirect('Catalog?page=' + (0) + '&' + filters);
+}

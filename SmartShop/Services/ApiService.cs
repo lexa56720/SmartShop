@@ -69,7 +69,22 @@ namespace SmartShop.Services
         {
             return await DB.Producers.ToArrayAsync();
         }
+        public async Task<Producer[]> GetProducers(int[] ids)
+        {
+            var producers = await DB.Producers
+                                    .Where(s => ids.Contains(s.Id))
+                                    .ToArrayAsync();
 
+            var result = new List<Producer>();
+            for (int i = 0; i < ids.Length; i++)
+            {
+                var smartphone = producers.FirstOrDefault(s => s.Id == ids[i]);
+                if (smartphone != null)
+                    result.Add(smartphone);
+            }
+
+            return result.ToArray();
+        }
         public async Task<bool> DeleteSmartphone(int id)
         {
             try
@@ -84,7 +99,6 @@ namespace SmartShop.Services
             }
 
         }
-
         public async Task<Order[]> GetOrders(int userId)
         {
             var orders = DB.Users.Include(u => u.Orders)
@@ -161,11 +175,9 @@ namespace SmartShop.Services
             return data.Data;
         }
 
-        public async Task<Smartphone[]> GetSmartphones(int count, int offset)
+        public async Task<Smartphone[]> GetSmartphones()
         {
-            return await DB.Smartphones.Skip(offset)
-                                       .Take(count)
-                                       .Include(s => s.Medias)
+            return await DB.Smartphones.Include(s => s.Medias)
                                        .ToArrayAsync();
         }
         public async Task<Smartphone[]> GetSmartphones(int[] ids)

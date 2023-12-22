@@ -4,51 +4,145 @@
 }
 @model CatalogViewModel;
 
-<div class="container">
+<div class="container-fluid rounded">
     <div class="row">
-        @foreach (Smartphone smartphone in Model.Smartphones)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <a href="Catalog/Product?id=@smartphone.Id" class="card-link">
-                        <img class="card-img-top" style="height:400px" src="@smartphone.Medias.First().Url" alt="@smartphone.Name">
-                        <div class="card-body">
-                            <h5 class="card-title">@smartphone.Name</h5>
-                            <p class="card-text">@smartphone.Description</p>
-                            <p class="card-text">$@smartphone.Price</p>
-
+        <div class="col-md-3">
+            <div class="filters-panel">
+                <h4 style="text-align:center">Фильтр</h4>
+                <div class="filter-scroll">
+                        <div id="ProducersFilterForm" class="filter-scroll-content">
+                            <h5>Производители</h5>
+                            @foreach (var producer in Model.Producers)
+                            {
+                                <div class="form-check">
+                                    @if (Model.ProducerFilter.Contains(producer))
+                                    {
+                                        <input class="form-check-input" type="checkbox" name="producerFilters" value="@producer.Id" checked="checked">
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" type="checkbox" name="producerFilters" value="@producer.Id">
+                                    }
+                                    <label class="form-check-label" for="producers">@producer.Name</label>
+                                </div>
+                            }
                         </div>
-                    </a>
-                    <div class="card-footer">
-                        <span class="d-block">
-                            @if (User != null && User.Role == Role.Admin)
-                            {
-                                <button style="margin:5px; background-color: #ffc107; border-color: #ffc107; color: #fff;"
-                                        id="EditButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect('Edit?id=@smartphone.Id');">
-                                    Редактировать
-                                </button>
-
-                                <button style="margin:5px; background-color: #dc3545; border-color: #dc3545; color: #fff;"
-                                        id="DeleteButton @smartphone.Id" href="#" class="btn btn-primary" onclick="DeleteProduct(@smartphone.Id);">
-                                    Удалить
-                                </button>
-                            }
-                            else
-                            {
-                                @if (smartphone.UnitsAvailable > 0)
-                                {
-                                    <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Добавить в корзину</button>
-                                }
-                                else
-                                {
-                                    <span class="text-danger">Нет в наличии</span>
-                                }
-                            }
-                        </span>
-                    </div>
+                        <button class="btn btn-primary" onclick="ApplyFilter();" > Применить</button>
                 </div>
             </div>
-        }
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (Smartphone smartphone in Model.Smartphones)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-200">
+                            <a href="Catalog/Product?id=@smartphone.Id" class="card-link">
+                                <img class="card-img-top" style="height:400px; width=100%" src="@smartphone.Medias.First().Url" alt="@smartphone.Name">
+                                <div class="card-body">
+                                    <h5 class="card-title">@smartphone.Name</h5>
+                                    <p class="card-text">@smartphone.Description</p>
+                                    <p class="card-text">$@smartphone.Price</p>
+                                </div>
+                            </a>
+                            <div class="card-footer">
+                                <span class="d-block">
+                                    @if (User != null && User.Role == Role.Admin)
+                                    {
+                                        <button style="margin:5px; background-color: #ffc107; border-color: #ffc107; color: #fff;"
+                                                id="EditButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect('Edit?id=@smartphone.Id');">
+                                            Редактировать
+                                        </button>
+
+                                        <button style="margin:5px; background-color: #dc3545; border-color: #dc3545; color: #fff;"
+                                                id="DeleteButton @smartphone.Id" href="#" class="btn btn-primary" onclick="DeleteProduct(@smartphone.Id);">
+                                            Удалить
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        @if (smartphone.UnitsAvailable > 0)
+                                        {
+                                            <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Добавить в корзину</button>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">Нет в наличии</span>
+                                        }
+                                    }
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-end align-items-center">
+                    <button class="btn btn-primary mr-2" id="prevPageBtn" disabled="@(!Model.IsHavePrevious)" onclick="PrevPage(@(Model.CurrentPage));">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <div class="mr-2">@(Model.CurrentPage + 1)</div>
+                    <button class="btn btn-primary" id="nextPageBtn" disabled="@(!Model.IsHaveNext)" onclick="NextPage(@(Model.CurrentPage));">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<style>
+    .form-check-input {
+        margin: 5px;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        cursor: pointer;
+        margin-right: 8px;
+    }
 
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+    .form-check-label {
+        margin-left: 30px;
+        margin-top: 5px;
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .filters-panel {
+        background-color: white;
+        position: sticky;
+        padding: 5px;
+        top: 15px;
+        height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+
+    .filter-scroll {
+        height: 90%;
+        overflow-y: auto;
+    }
+
+    .filter-scroll-content {
+        padding-right: 15px;
+    }
+</style>
+<script>
+    function NextPage(page) {
+        ButtonRedirect('Catalog?page=' + (page + 1) +'&'+ GetFilters('ProducersFilterForm'));
+    }
+    function PrevPage(page) {
+        ButtonRedirect('Catalog?page=' + (page - 1) +'&'+ GetFilters('ProducersFilterForm'));
+    }
+
+</script>
