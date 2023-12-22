@@ -2,6 +2,7 @@
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
 using SmartShop.Models;
+using SmartShop.Models.TableEditor;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
 
@@ -15,10 +16,9 @@ namespace SmartShop.Controllers
             if (Api.User != null && Api.User.Role == Role.Admin)
                 return await AdminPanel();
 
-
-            ViewBag.Orders = await Api.GetOrders(Api.User.Id);
-            return View();
+            return View(new ProfileViewModel(await Api.GetOrders(Api.User.Id)));
         }
+
         [Access(Role.Admin)]
         public async Task<IActionResult> AdminPanel()
         {

@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartShop.DataBase.Tables;
 
-namespace SmartShop.Models
+namespace SmartShop.Models.TableEditor
 {
     public class AdminPanelViewModel
     {
-
         public string[] Tables { get; set; }
         public Producer[] Producers { get; }
-
-        public AdminPanelViewModel(DbContext context,Producer[] producers)
+        public AdminPanelViewModel(DbContext context, Producer[] producers)
         {
             Tables = context.Model.GetEntityTypes()
                                   .Select(t => t.GetTableName())
@@ -19,6 +17,4 @@ namespace SmartShop.Models
             Producers = producers;
         }
     }
-
-
 }

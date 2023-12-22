@@ -11,7 +11,7 @@ namespace SmartShop.Controllers
         public async Task<IActionResult> GetMedia(string id)
         {
             var extension = id[(id.LastIndexOf('.') + 1)..];
-            var media = await Api.GetMedia("/images/" + id);
+            var media = await Api.GetMedia("/images/" + id[0..id.LastIndexOf('.')]);
             return File(media, $"image/{extension}");
         }
 

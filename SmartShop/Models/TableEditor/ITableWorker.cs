@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace SmartShop.Models
+namespace SmartShop.Models.TableEditor
 {
-    public interface ITableWorker 
-    { 
+    public interface ITableWorker
+    {
         public string TableName { get; }
         public ReadOnlyDictionary<string, string> Columns { get; }
         public Task<bool> UpdateRow(params string[] values);

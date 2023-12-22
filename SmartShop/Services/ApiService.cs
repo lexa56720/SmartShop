@@ -239,7 +239,7 @@ namespace SmartShop.Services
         }
         private string GenerateImageUrl()
         {
-            return $"/images/{RandomNumberGenerator.GetHexString(16, true)}.png";
+            return $"/images/{RandomNumberGenerator.GetHexString(16, true)}";
         }
     }
 }

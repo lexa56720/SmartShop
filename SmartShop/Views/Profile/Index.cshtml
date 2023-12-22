@@ -1,22 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Html
 
 @{
-    Order[] Orders = ViewBag.Orders;
+    ViewData["Title"] = "Профиль";
 }
+@model ProfileViewModel;
 
 <div class="tab">
-    <button class="tablinks" onclick="openTab(event, 'currentOrders')" id="defaultOpen">Current Orders</button>
-    <button class="tablinks" onclick="openTab(event, 'completedOrders')">Completed Orders</button>
+    <button class="tablinks" onclick="openTab(event, 'currentOrders')" id="defaultOpen">Текущие заказы</button>
+    <button class="tablinks" onclick="openTab(event, 'completedOrders')">Полученные заказы</button>
 </div>
 
 <div id="currentOrders" class="tabcontent">
-    @foreach (var order in Orders)
+    @foreach (var order in Model.Orders)
     {
         @if (order.Status != OrderStatus.Completed)
         {
             <div class="order-card">
-                <h4>Order ID: @order.Code</h4>
-                <h5>Order Date: @order.OrderDate.ToLocalTime().ToString("dddd, dd MMMM yyyy, HH:mm")</h5>
+                <h4>Код заказа: @order.Code</h4>
+                <h5>Дата оформления: @order.OrderDate.ToLocalTime().ToString("dddd, dd MMMM yyyy, HH:mm")</h5>
                 <ul>
                    @foreach(var phone in order.Smartphones)
                     {
@@ -24,7 +25,7 @@
                     }
                     
                 </ul>
-                <p>Status: @order.Status.ToString()</p>
+                <p>Статус: @order.Status.ToString()</p>
                 <div class="status-bar">
                     <div class="status-marker @order.Status.ToString().ToLower()"></div>
                 </div>
@@ -34,13 +35,13 @@
 </div>
 
 <div id="completedOrders" class="tabcontent">
-    @foreach (var order in Orders)
+    @foreach (var order in Model.Orders)
     {
         @if (order.Status == OrderStatus.Completed)
         {
             <div class="order-card">
-                <h4>Order ID: @order.Code</h4>
-                <h5>Order Date: @order.OrderDate.ToLocalTime().ToString("dddd, dd MMMM yyyy, HH:mm")</h5>
+                <h4>Код заказа: @order.Code</h4>
+                <h5>Дата оформления: @order.OrderDate.ToLocalTime().ToString("dddd, dd MMMM yyyy, HH:mm")</h5>
                 <ul>
                     @foreach (var phone in order.Smartphones)
                     {
@@ -48,7 +49,7 @@
                     }
 
                 </ul>
-                <p>Status: @order.Status.ToString()</p>
+                <p>Статус: @order.Status.ToString()</p>
                 <div class="status-bar">
                     <div class="status-marker @order.Status.ToString().ToLower()"></div>
                 </div>
@@ -57,49 +58,6 @@
     }
 </div>
 
-<style>
-    .order-card {
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .status-bar {
-        height: 20px;
-        background-color: #f0f0f0;
-        border-radius: 5px;
-        margin-top: 10px;
-        overflow: hidden;
-    }
-
-    .status-marker {
-        height: 100%;
-        transition: width 0.3s ease-in-out;
-    }
-
-    /* Status-specific colors */
-    .ordered {
-        width: 25%;
-        background-color: #ffc107;
-    }
-
-    .shipping {
-        width: 50%;
-        background-color: #17a2b8;
-    }
-
-    .arrived {
-        width: 75%;
-        background-color: #28a745;
-    }
-
-    .completed {
-        width: 100%;
-        background-color: #007bff;
-    }
-</style>
 
 <script>
     function openTab(evt, tabName) {

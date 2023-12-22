@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartShop.DataBase;
+using SmartShop.Models;
 using SmartShop.Services;
 
 namespace SmartShop.Controllers
@@ -8,8 +9,8 @@ namespace SmartShop.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            ViewBag.Smartphones = await Api.GetSmartphones(50, 0);
-            return View();
+            var smartphones = await Api.GetSmartphones(50, 0);     
+            return View(new CatalogViewModel(smartphones, smartphones.Length, 0));
         }
 
         public async Task<IActionResult> Product(int id)
@@ -17,8 +18,7 @@ namespace SmartShop.Controllers
             var smartphone = await Api.GetSmartphone(id);
             if (smartphone == null)
                 return BadRequest();
-            ViewBag.Smartphone=smartphone;
-            return View();
+            return View(new ProductViewModel(smartphone));
         }
 
         [Route("Edit")]
@@ -28,9 +28,7 @@ namespace SmartShop.Controllers
             if (smartphone == null)
                 return BadRequest();
 
-            ViewBag.Smartphone = smartphone;
-            ViewBag.Producers =await Api.GetProducers();
-            return View();
+            return View(new EditViewModel(smartphone, await Api.GetProducers()));
         }
     }
 }

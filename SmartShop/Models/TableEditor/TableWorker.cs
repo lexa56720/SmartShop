@@ -5,7 +5,7 @@ using SmartShop.DataBase.Tables;
 using System.Collections.ObjectModel;
 using System.Reflection;
 
-namespace SmartShop.Models
+namespace SmartShop.Models.TableEditor
 {
     public class TableWorker<T> : ITableWorker where T : class, new()
     {
@@ -55,7 +55,7 @@ namespace SmartShop.Models
                 var result = Assign(value, values[1..]);
                 if (result == null)
                     return false;
-                return (await Context.SaveChangesAsync()) != 0;
+                return await Context.SaveChangesAsync() != 0;
             }
             catch
             {
@@ -69,13 +69,13 @@ namespace SmartShop.Models
             var table = GetTable(Context);
 
             if (value == null || table == null ||
-                !int.TryParse(values[0], out var id) || (await table.FindAsync(id)) != null)
+                !int.TryParse(values[0], out var id) || await table.FindAsync(id) != null)
                 return false;
 
             try
             {
                 var result = await table.AddAsync(value);
-                return (await Context.SaveChangesAsync()) != 0;
+                return await Context.SaveChangesAsync() != 0;
             }
             catch
             {
@@ -97,7 +97,7 @@ namespace SmartShop.Models
             try
             {
                 var result = table.Remove(value);
-                return (await Context.SaveChangesAsync()) != 0;
+                return await Context.SaveChangesAsync() != 0;
             }
             catch
             {

@@ -239,3 +239,65 @@ select {
         font-size: 18px;
         outline: none;
     }
+.delete-btn {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.delete-btn:hover {
+    color: red;
+}
+
+.order-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-bar {
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.status-marker {
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Status-specific colors */
+.ordered {
+    width: 25%;
+    background-color: #ffc107;
+}
+
+.shipping {
+    width: 50%;
+    background-color: #17a2b8;
+}
+
+.arrived {
+    width: 75%;
+    background-color: #28a745;
+}
+
+.completed {
+    width: 100%;
+    background-color: #007bff;
+}

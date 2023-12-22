@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
+using SmartShop.Models;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
 
@@ -13,10 +14,7 @@ namespace SmartShop.Controllers
         {
             var productsId = GetCartContentIds();
 
-            ViewBag.CartContent = (await Api.GetSmartphones(productsId))
-                                   .Select(s => new KeyValuePair<Smartphone, bool>(s, s.UnitsAvailable > 0))
-                                   .ToArray();
-            return View();
+            return View(new CartViewModel(await Api.GetSmartphones(productsId)));
         }
 
 
@@ -26,9 +24,7 @@ namespace SmartShop.Controllers
         {
             var productsId = GetCartContentIds();
 
-            var order = await Api.CreateOrder(Api.User, productsId);
-            ViewBag.Order = order.Code;
-            return View();
+            return View(await Api.CreateOrder(Api.User, productsId));
         }
 
         private int[] GetCartContentIds()

@@ -1,12 +1,12 @@
-﻿@using SmartShop.DataBase.Tables
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "SmartShop";
     User? User = ViewBag.User;
 }
+@model CatalogViewModel;
 
 <div class="container">
     <div class="row">
-        @foreach (Smartphone smartphone in ViewBag.Smartphones)
+        @foreach (Smartphone smartphone in Model.Smartphones)
         {
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
@@ -25,23 +25,23 @@
                             {
                                 <button style="margin:5px; background-color: #ffc107; border-color: #ffc107; color: #fff;"
                                         id="EditButton @smartphone.Id" href="#" class="btn btn-primary" onclick="ButtonRedirect('Edit?id=@smartphone.Id');">
-                                    Edit
+                                    Редактировать
                                 </button>
 
                                 <button style="margin:5px; background-color: #dc3545; border-color: #dc3545; color: #fff;"
                                         id="DeleteButton @smartphone.Id" href="#" class="btn btn-primary" onclick="DeleteProduct(@smartphone.Id);">
-                                    Delete
+                                    Удалить
                                 </button>
                             }
                             else
                             {
                                 @if (smartphone.UnitsAvailable > 0)
                                 {
-                                    <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Add to Cart</button>
+                                    <button id="AddToCartButton @smartphone.Id" href="#" class="btn btn-primary" onclick="AddToCart(@smartphone.Id);">Добавить в корзину</button>
                                 }
                                 else
                                 {
-                                    <span class="text-danger">Out of Stock</span>
+                                    <span class="text-danger">Нет в наличии</span>
                                 }
                             }
                         </span>

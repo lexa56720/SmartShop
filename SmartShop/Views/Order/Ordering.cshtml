@@ -1,30 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Заказ";
 }
+@model OrderingViewModel;
 
 <div class="container mt-4">
     <div class="alert alert-success" role="alert">
-        <h2 class="alert-heading">THANK YOU!</h2>
+        <h2 class="alert-heading">Спасибо!</h2>
 
-        <h5 class="alert-heading">Order Successfully Created</h5>
+        <h5 class="alert-heading">Заказ успешно создан</h5>
+
+        @foreach(var smartphone in Model.Order.Smartphones)
+        {
+            <h6>@smartphone.Name</h6>
+        }
         <hr>
-        <p class="mb-0">Your order, @ViewBag.Order, has been successfully created. Thank you for shopping with us!</p>
+        <p class="mb-0">Ваш заказ, @Model.Order.Code, был успешно создан. Спасибо что покупаете сматрфоны у нас!</p>
     </div>
 </div>
 
 <style>
-    /* Custom styles can be added here */
-    /* Example styles for the success message */
     .alert-success {
-        background-color: #d4edda; /* Change to your preferred color */
-        color: #155724; /* Change to your preferred text color */
-        border-color: #c3e6cb; /* Change to your preferred border color */
+        background-color: #d4edda; 
+        color: #155724; 
+        border-color: #c3e6cb; 
     }
 
     .alert-heading {
-        font-size: 1.5rem; /* Change to your preferred heading size */
+        font-size: 1.5rem; 
         font-weight: bold;
     }
 </style>

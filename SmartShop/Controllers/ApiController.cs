@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
-using SmartShop.Models;
+using SmartShop.Models.TableEditor;
 using SmartShop.Services;
 using SmartShop.Services.Auth;
 using System.Buffers.Text;
@@ -32,8 +32,9 @@ namespace SmartShop.Controllers
             return Ok();
         }
 
-        [HttpPost("api/AddProduct")]
+
         [Access(Role.Admin)]
+        [HttpPost("api/AddProduct")]   
         public async Task<IActionResult> AddProduct(Smartphone smartphone)
         {
             var form = await HttpContext.Request.ReadFormAsync();
@@ -53,8 +54,8 @@ namespace SmartShop.Controllers
             return BadRequest();
         }
 
-        [HttpPost("api/EditProduct")]
         [Access(Role.Admin)]
+        [HttpPost("api/EditProduct")]     
         public async Task<IActionResult> EditProduct(Smartphone smartphone)
         {
             var form = await HttpContext.Request.ReadFormAsync();
@@ -67,8 +68,8 @@ namespace SmartShop.Controllers
             return BadRequest();
         }
 
-        [HttpPost("api/DeleteProduct")]
         [Access(Role.Admin)]
+        [HttpPost("api/DeleteProduct")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             if (await Api.DeleteSmartphone(id))
@@ -85,7 +86,7 @@ namespace SmartShop.Controllers
 
             var tableEntity = GetTable(table);
             if (tableEntity != null)
-                return PartialView("TableView", tableEntity);
+                return PartialView("TableEditor", tableEntity);
 
             return BadRequest();
         }
@@ -102,7 +103,7 @@ namespace SmartShop.Controllers
 
             var tableEntity = GetTable(table);
             if (tableEntity != null && (await tableEntity.UpdateRow(args)))
-                return PartialView("TableView", tableEntity);
+                return PartialView("TableEditor", tableEntity);
 
             return BadRequest();
         }
@@ -119,7 +120,7 @@ namespace SmartShop.Controllers
 
             var tableEntity = GetTable(table);
             if (tableEntity != null && (await tableEntity.DeleteRow(args)))
-                return PartialView("TableView", tableEntity);
+                return PartialView("TableEditor", tableEntity);
 
             return BadRequest();
         }
@@ -136,7 +137,7 @@ namespace SmartShop.Controllers
 
             var tableEntity = GetTable(table);
             if (tableEntity != null && (await tableEntity.AddRow(args)))
-                return PartialView("TableView", tableEntity);
+                return PartialView("TableEditor", tableEntity);
 
             return BadRequest();
         }

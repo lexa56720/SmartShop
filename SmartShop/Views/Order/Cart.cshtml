@@ -1,15 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Cart";
-    KeyValuePair<Smartphone, bool>[] smartphones = ViewBag.CartContent;
+    ViewData["Title"] = "Корзина";
 }
+@model CartViewModel;
 
 <div class="container mt-4">
-    <h2>Your Cart:</h2>
-    @if (smartphones != null && smartphones.Length > 0)
+    <h2>Ваша корзина:</h2>
+    @if (Model.CartContent != null && Model.CartContent.Length > 0)
     {
-        @for (var i = 0; i < smartphones.Length; i++)
+        @for (var i = 0; i < Model.CartContent.Length; i++)
         {
-            var smartphone = smartphones[i];
+            var smartphone = Model.CartContent[i];
             <div class="card mb-3 position-relative" id="card item @i" style="opacity:@(smartphone.Value?"1":"0.5")">
                 <div class="row no-gutters">
                     <div class="col-md-3">
@@ -39,16 +39,16 @@
             </div>
         }
         <div class="text-right">
-            <h4 id="TotalPrice">Total Price: $@(smartphones.Sum(s => s.Key.Price))</h4>
+            <h4 id="TotalPrice">Итоговая цена: $@(Model.CartContent.Sum(s => s.Key.Price))</h4>
 
             <button class="btn btn-primary" onclick="@(ViewBag.User!=null?"ButtonRedirect('Ordering')":"ButtonRedirect('Auth/Login')")">
-                Buy Now
+                Оплатить
             </button>
         </div>
     }
     else
     {
-        <p>Your cart is empty.</p>
+        <p>Пусто</p>
     }
 </div>
 
@@ -61,29 +61,7 @@
         var searchIndex = totalPrice.innerText.indexOf("$");
         var strOut = totalPrice.innerText.substring(searchIndex + 1); //this is where the magic happens :)
 
-        totalPrice.innerText = "Total price: $" + (strOut - price);
+        totalPrice.innerText = "Итоговая цена: $" + (strOut - price);
     }
 </script>
 
-<style>
-    .delete-btn {
-        background-color: transparent;
-        border: none;
-        color: #000;
-        transition: color 0.3s ease;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-    }
-
-    .centered {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .delete-btn:hover {
-        color: red;
-    }
-</style>
