@@ -1,4 +1,6 @@
 using SmartShop.DataBase;
+using SmartShop.DataBase.Tables;
+using SmartShop.Services;
 
 namespace SmartShop
 {

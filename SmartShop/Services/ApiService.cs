@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.Elfie.Extensions;
+using Microsoft.EntityFrameworkCore;
 using SmartShop.DataBase;
 using SmartShop.DataBase.Tables;
 using System.Security.Cryptography;
@@ -41,7 +42,7 @@ namespace SmartShop.Services
             var user = new User()
             {
                 Login = login,
-                Password = pass,
+                Password = GetHash(pass),
                 Name = name,
                 Token = GenerateToken(64),
                 Role = Role.User
@@ -55,7 +56,7 @@ namespace SmartShop.Services
         {
             var user = await GetUser(login);
 
-            if (user == null || user.Password != pass)
+            if (user == null || user.Password != GetHash(pass))
                 return false;
 
             user.Token = GenerateToken(64);
@@ -204,7 +205,6 @@ namespace SmartShop.Services
                 .Include(s => s.Medias)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
-
         public async Task<Order?> CreateOrder(User user, int[] smartphoneIds)
         {
             var orderContent = new List<Smartphone>();
@@ -245,6 +245,10 @@ namespace SmartShop.Services
             return await DB.Users.FirstOrDefaultAsync(u => u.Login == login);
         }
 
+        private string GetHash(string pass)
+        {
+           return pass.ToSHA256String();
+        }
         private string GenerateToken(int size)
         {
             return RandomNumberGenerator.GetHexString(size);

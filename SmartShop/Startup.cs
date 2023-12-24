@@ -13,7 +13,6 @@ namespace SmartShop
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -34,11 +33,9 @@ namespace SmartShop
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            // Configure the HTTP request pipeline.
             if (!env.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -47,8 +44,6 @@ namespace SmartShop
 
             app.UseRouting();
 
-            app.UseAuthorization();
-            app.UseAuthentication();
             app.UseAuthFilter();
 
             app.UseEndpoints(endpoints =>

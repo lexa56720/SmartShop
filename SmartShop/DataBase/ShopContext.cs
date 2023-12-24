@@ -7,8 +7,8 @@ namespace SmartShop.DataBase
     {
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
-            
-           // Database.EnsureDeleted();
+
+            // Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -24,7 +24,6 @@ namespace SmartShop.DataBase
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
 
             modelBuilder.Entity<User>(entity =>
              {
@@ -43,7 +42,6 @@ namespace SmartShop.DataBase
              });
 
 
-
             modelBuilder.Entity<Smartphone>(entity =>
             {
                 entity.ToTable("smartphones");
@@ -60,7 +58,7 @@ namespace SmartShop.DataBase
                 entity.Property(e => e.UnitsAvailable).HasColumnName("units_available");
 
                 entity.HasOne(e => e.Producer).WithMany(p => p.Smartphones)
-                      .HasForeignKey(s => s.ProducerId);
+                        .HasForeignKey(s => s.ProducerId);
             });
             modelBuilder.Entity<Media>(entity =>
             {
@@ -97,8 +95,6 @@ namespace SmartShop.DataBase
 
                 entity.HasMany(e => e.Smartphones).WithMany();
             });
-
-
         }
     }
 }
