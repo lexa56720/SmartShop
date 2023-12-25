@@ -63,7 +63,7 @@ namespace SmartShop.Controllers
 
             if (!form.TryGetValue("producerName", out var producer) || !form.TryGetValue("price", out var price))
                 return BadRequest();
-            smartphone.Price = Convert.ToSingle(price, CultureInfo.CurrentCulture.NumberFormat);
+            smartphone.Price = Convert.ToSingle(price, CultureInfo.InvariantCulture.NumberFormat);
             if (await Api.EditSmartphone(smartphone, producer.ToString()))
                 return Ok();
             return BadRequest();

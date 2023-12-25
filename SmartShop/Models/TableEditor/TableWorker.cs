@@ -21,7 +21,7 @@ namespace SmartShop.Models.TableEditor
         private Dictionary<Type, Func<string, object>> Converter = new()
         {
             { typeof(int),s=>int.Parse(s) },
-            { typeof(float),s=>Convert.ToSingle(s, CultureInfo.CurrentCulture.NumberFormat)},
+            { typeof(float),s=>Convert.ToSingle(s, CultureInfo.InvariantCulture.NumberFormat)},
             { typeof(string),s=>s },
             { typeof(DateTime),s=>
             {
